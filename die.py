@@ -1,0 +1,49 @@
+# Creator: Jaydne Murillo
+# Project: Dice Poker
+# Made: 1.13.26
+# Last Edit: 1.13.26
+
+import random
+
+
+class Dice:
+
+    def __init__(self):
+        self.MAX_DICE = 5
+        self.dice = []
+        self.store = []
+
+        for i in range(self.MAX_DICE):
+            self.dice.append(Die())
+            self.store.append(True)
+        
+        
+
+            
+            
+
+
+class Die:
+    
+
+    def __init__(self):
+        self.faces = 6
+        self.value = 1
+        
+
+    def roll_dice(self):
+        self.value = random.randint(1,self.faces)
+        return self.value
+    
+    def get_value(self):
+        return self.faces
+
+
+    # def __str__(self):
+    #     return f"This is your number {self.value} and this is the face you landed on {self.faces}"
+
+
+
+# if __name__ == '__main__':
+#     test = Die()
+#     print(f"This Is what you rolled {test.roll_dice()}, This is number of faces of the dice {test.get_value()}")
