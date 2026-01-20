@@ -13,29 +13,103 @@ for i in range(dice.MAX_DICE):
     dices_values = dice.dice[i].roll_dice()
     dice_output.append(dices_values)
 
+print(dice_output)
 
 def play_dice():
     tries = 1
-    tries_remaining = 3 - tries
+    global index
 
-    print(f"Roll: {tries}  |  Re-roll's Remaining: {tries_remaining} \n")
+    GAME = True
 
-    display_dice()
+    while GAME:
+        tries_remaining = 3 - tries
 
-    print(f"Dice #1: {dice_output[0]}\n"
-          f"Dice #2: {dice_output[1]}\n"
-          f"Dice #3: {dice_output[2]}\n"
-          f"Dice #4: {dice_output[3]}\n"
-          f"Dice #5: {dice_output[4]}\n"
-          )
+        print(f"Roll: {tries}  |  Re-roll's Remaining: {tries_remaining} \n")
+
+        display_dice()
+
+        print(f"Dice #1: {dice_output[0]}\n"
+            f"Dice #2: {dice_output[1]}\n"
+            f"Dice #3: {dice_output[2]}\n"
+            f"Dice #4: {dice_output[3]}\n"
+            f"Dice #5: {dice_output[4]}\n"
+            )
+        
+        print(f"This Shows The Dices Your Keeping: {dice.store}")
+
+        
+        answer = prompt_menu("Please Select An Option", ["Keep Dice #1","Keep Dice #2","Keep Dice #3","Keep Dice #4","Keep Dice #5", "Reroll"])
+
+        match answer:
+            case "Keep Dice #1":
+                index = 0
+                change_keep()                
+            case "Keep Dice #2":
+                index = 1
+                change_keep()                
+            case "Keep Dice #3":
+                index = 2
+                change_keep()                
+            case "Keep Dice #4":
+                index = 3
+                change_keep()                
+            case "Keep Dice #5":
+                index = 4
+                change_keep()                
+            case "Reroll":
+                tries += 1
+                reroll_dice()
+                print("Rerolling...")
+                os.system('cls' if os.name == 'nt' else 'clear') 
+                if tries == 3:
+                    GAME = False
+                time.sleep(1)
+    
+    if tries == 3:
+        print("GAME OVER")
+
+        display_dice()
+
+        print(f"Dice #1: {dice_output[0]}\n"
+            f"Dice #2: {dice_output[1]}\n"
+            f"Dice #3: {dice_output[2]}\n"
+            f"Dice #4: {dice_output[3]}\n"
+            f"Dice #5: {dice_output[4]}\n"
+            )
+        
+        answer = prompt_menu("Would You Like To Play Again?", ["Yes", "No"])
+
+        match answer:
+            case "Yes":
+                play_dice()
+            case "No":
+                print("Thank You For Playing!")
+                exit()
+
+
+
+def change_keep():
+    global index 
+    if dice.store[index] == False:
+        dice.store[index] = True
+    else:
+        dice.store[index] = False
+
+
+def reroll_dice():
+    for i in range(len(dice.store)):
+        if dice.store[i] == True:
+            pass
+        else:
+            dice_output[i] = dice.dice[i].roll_dice()
+
+
+
+
 
 def display_dice():
     global dice_output
     print(f"Dice Rolled:\n {face_icons[dice_output[0] - 1]} {face_icons[dice_output[1] - 1]} {face_icons[dice_output[2] - 1]} {face_icons[dice_output[3] - 1]} {face_icons[dice_output[4] - 1]} ")
-
-
-
-
 
 
 def prompt_menu(messages, user_choices): # Function that uses inquirer3 list to make it easy to print out a menu for the user with options.

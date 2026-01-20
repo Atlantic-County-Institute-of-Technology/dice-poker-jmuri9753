@@ -15,7 +15,7 @@ class Dice:
 
         for i in range(self.MAX_DICE):
             self.dice.append(Die())
-            self.store.append(True)
+            self.store.append("Rerolling")
 
 
 class Die:
