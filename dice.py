@@ -9,15 +9,14 @@ import os
 dice = Dice()
 dice_output = []
 
-for i in range(dice.MAX_DICE):
-    dices_values = dice.dice[i].roll_dice()
-    dice_output.append(dices_values)
-
-print(dice_output)
 
 def play_dice():
     tries = 1
     global index
+
+    for i in range(dice.MAX_DICE):
+        dices_values = dice.dice[i].roll_dice()
+        dice_output.append(dices_values)
 
     GAME = True
 
@@ -35,7 +34,7 @@ def play_dice():
             f"Dice #5: {dice_output[4]}\n"
             )
         
-        print(f"This Shows The Dices Your Keeping: {dice.store}")
+        print(f"This Shows The Dices Your Keeping Or Rerolling: {dice.store}")
 
         
         answer = prompt_menu("Please Select An Option", ["Keep Dice #1","Keep Dice #2","Keep Dice #3","Keep Dice #4","Keep Dice #5", "Reroll"])
@@ -63,10 +62,18 @@ def play_dice():
                 os.system('cls' if os.name == 'nt' else 'clear') 
                 if tries == 3:
                     GAME = False
-                time.sleep(1)
     
     if tries == 3:
-        print("GAME OVER")
+        print("""  ▄████  ▄▄▄       ███▄ ▄███▓▓█████     ▒█████   ██▒   █▓▓█████  ██▀███  
+ ██▒ ▀█▒▒████▄    ▓██▒▀█▀ ██▒▓█   ▀    ▒██▒  ██▒▓██░   █▒▓█   ▀ ▓██ ▒ ██▒
+▒██░▄▄▄░▒██  ▀█▄  ▓██    ▓██░▒███      ▒██░  ██▒ ▓██  █▒░▒███   ▓██ ░▄█ ▒
+░▓█  ██▓░██▄▄▄▄██ ▒██    ▒██ ▒▓█  ▄    ▒██   ██░  ▒██ █░░▒▓█  ▄ ▒██▀▀█▄  
+░▒▓███▀▒ ▓█   ▓██▒▒██▒   ░██▒░▒████▒   ░ ████▓▒░   ▒▀█░  ░▒████▒░██▓ ▒██▒
+ ░▒   ▒  ▒▒   ▓▒█░░ ▒░   ░  ░░░ ▒░ ░   ░ ▒░▒░▒░    ░ ▐░  ░░ ▒░ ░░ ▒▓ ░▒▓░
+  ░   ░   ▒   ▒▒ ░░  ░      ░ ░ ░  ░     ░ ▒ ▒░    ░ ░░   ░ ░  ░  ░▒ ░ ▒░
+░ ░   ░   ░   ▒   ░      ░      ░      ░ ░ ░ ▒       ░░     ░     ░░   ░ 
+      ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░     
+                                                     ░                   """)
 
         display_dice()
 
@@ -77,10 +84,15 @@ def play_dice():
             f"Dice #5: {dice_output[4]}\n"
             )
         
+        check_end_score()
+        
         answer = prompt_menu("Would You Like To Play Again?", ["Yes", "No"])
 
         match answer:
             case "Yes":
+                for i in range(len(dice.store)):
+                    dice.store[i] = "Rerolling"
+                    dice_output[i] = dice.dice[i].roll_dice()
                 play_dice()
             case "No":
                 print("Thank You For Playing!")
@@ -90,15 +102,18 @@ def play_dice():
 
 def change_keep():
     global index 
-    if dice.store[index] == False:
-        dice.store[index] = True
+    if dice.store[index] == "Keeping":
+        dice.store[index] = "Rerolling"
     else:
-        dice.store[index] = False
+        dice.store[index] = "Keeping"
+
+def check_end_score():
+    pass
 
 
 def reroll_dice():
     for i in range(len(dice.store)):
-        if dice.store[i] == True:
+        if dice.store[i] == "Keeping":
             pass
         else:
             dice_output[i] = dice.dice[i].roll_dice()
