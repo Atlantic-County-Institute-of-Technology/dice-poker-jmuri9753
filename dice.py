@@ -7,16 +7,19 @@ import inquirer3
 import os
 
 dice = Dice()
-dice_output = []
 
 
 def play_dice():
     tries = 1
     global index
+    global dice_output
+
+    dice_output = []
 
     for i in range(dice.MAX_DICE):
         dices_values = dice.dice[i].roll_dice()
         dice_output.append(dices_values)
+
 
     GAME = True
 
@@ -108,7 +111,67 @@ def change_keep():
         dice.store[index] = "Keeping"
 
 def check_end_score():
-    pass
+    global dice_output
+    global num_scores
+    num_scores = [0,0,0,0,0,0]
+    dice_output = [1,1,1,2,2]
+    print(dice_output)
+
+    for i in range(len(dice_output)):
+        if dice_output[i] == 1:
+            num_scores[0] += 1
+        if dice_output[i] == 2:
+            num_scores[1] += 1
+        if dice_output[i] == 3:
+            num_scores[2] += 1
+        if dice_output[i] == 4:
+            num_scores[3] += 1
+        if dice_output[i] == 5:
+            num_scores[4] += 1
+        if dice_output[i] == 6:
+            num_scores[5] += 1
+
+    if five_kind() == "Five":
+        print("Five Of A Kind!")
+    elif four_kind == "Four":
+        print("Four Of A Kind!")
+    elif full_house() == "Full":
+        pass
+    
+    # five_output = five_kind()
+
+    # if five_output == None:
+    #     pass
+    # else:
+    #     print(five_output)
+
+    # four_kind()
+    
+def five_kind():
+    global dice_output
+    global num_scores
+
+    for i in range(len(dice_output)):
+        if num_scores[i] == 5:
+            return "Five"
+        else:
+            return None
+        
+def four_kind():
+    global dice_output
+    global num_scores
+
+    for i in range(len(dice_output)):
+        if num_scores[i] == 4:
+            return "Four"
+        else:
+            return None
+        
+def full_house():
+    global dice_output
+    global num_scores
+
+    
 
 
 def reroll_dice():
