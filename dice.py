@@ -114,8 +114,6 @@ def check_end_score():
     global dice_output
     global num_scores
     num_scores = [0,0,0,0,0,0]
-    dice_output = [1,1,1,2,2]
-    print(dice_output)
 
     for i in range(len(dice_output)):
         if dice_output[i] == 1:
@@ -130,22 +128,23 @@ def check_end_score():
             num_scores[4] += 1
         if dice_output[i] == 6:
             num_scores[5] += 1
+    print(num_scores)
 
     if five_kind() == "Five":
         print("Five Of A Kind!")
     elif four_kind == "Four":
         print("Four Of A Kind!")
     elif full_house() == "Full":
-        pass
-    
-    # five_output = five_kind()
+        print("Full House!")
+    elif straight() == "Straight":
+        print("A Straight!")
+    elif two_pair() == "Two Pair":
+        print("Two Pair!")
+    elif two_kind() == "Two Kind":
+        print("Two Of A Kind!")
+    else:
+        print("LOSER HAHAHA")
 
-    # if five_output == None:
-    #     pass
-    # else:
-    #     print(five_output)
-
-    # four_kind()
     
 def five_kind():
     global dice_output
@@ -171,7 +170,38 @@ def full_house():
     global dice_output
     global num_scores
 
-    
+
+    if 3 in num_scores and 2 in num_scores:
+        return "Full"
+    else:
+        None
+
+def straight():
+    global dice_output
+    global num_scores
+
+    if num_scores.count(1) == 5:
+        return "Straight"
+    else:
+        None
+
+def two_pair():
+    global dice_output
+    global num_scores
+
+    if num_scores.count(2) == 2:
+        return "Two Pair"
+    else:
+        None
+
+def two_kind():
+    global dice_output
+    global num_scores
+
+    if num_scores.count(2) == 1:
+        return "Two Kind"
+    else:
+        return None
 
 
 def reroll_dice():
@@ -180,9 +210,6 @@ def reroll_dice():
             pass
         else:
             dice_output[i] = dice.dice[i].roll_dice()
-
-
-
 
 
 def display_dice():
