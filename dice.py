@@ -61,7 +61,7 @@ def play_dice():
             case "Reroll":
                 tries += 1
                 reroll_dice()
-                print("Rerolling...")
+                reroll_animation()                
                 os.system('cls' if os.name == 'nt' else 'clear') 
                 if tries == 3:
                     GAME = False
@@ -109,6 +109,32 @@ def change_keep():
         dice.store[index] = "Rerolling"
     else:
         dice.store[index] = "Keeping"
+
+def reroll_animation():
+    global dice_output
+    global face_icons
+
+    rand = random.randint(1,5)
+    rerolls = 0
+    reroll = True
+
+    os.system('cls' if os.name == 'nt' else 'clear') 
+
+    while reroll:
+        print("Rerolling... ")
+
+        for i in range(len(dice_output)):
+            print(f" {face_icons[dice_output[i] - 2]}")
+        
+        time.sleep(1)
+        
+        rerolls += 1
+        os.system('cls' if os.name == 'nt' else 'clear') 
+
+
+        if rerolls == 5:
+            reroll = False
+
 
 def check_end_score():
     global dice_output
@@ -272,7 +298,12 @@ def reroll_dice():
 
 def display_dice():
     global dice_output
-    print(f"Dice Rolled:\n {face_icons[dice_output[0] - 1]} {face_icons[dice_output[1] - 1]} {face_icons[dice_output[2] - 1]} {face_icons[dice_output[3] - 1]} {face_icons[dice_output[4] - 1]} ")        
+
+    print("Dice Rolled: ")
+
+    for i in range(len(dice_output)):
+        print(f" {face_icons[dice_output[i] - 1]}")
+    # print(f"Dice Rolled:\n {face_icons[dice_output[0] - 1]} {face_icons[dice_output[1] - 1]} {face_icons[dice_output[2] - 1]} {face_icons[dice_output[3] - 1]} {face_icons[dice_output[4] - 1]} ")        
 
 
 def prompt_menu(messages, user_choices): # Function that uses inquirer3 list to make it easy to print out a menu for the user with options.
