@@ -114,7 +114,6 @@ def reroll_animation():
     global dice_output
     global face_icons
 
-    rand = random.randint(1,5)
     rerolls = 0
     reroll = True
 
@@ -123,16 +122,28 @@ def reroll_animation():
     while reroll:
         print("Rerolling... ")
 
-        for i in range(len(dice_output)):
-            print(f" {face_icons[dice_output[i] - 2]}")
-        
+        if rerolls == 2:
+            for i in range(len(dice_output)):
+                rand = random.randint(0,4)
+                print(f" {face_icons[dice_output[i] - 1]}")
+                time.sleep(0.3)
+        else:
+            for i in range(len(dice_output)):
+                rand = random.randint(0,4)
+                if dice.store[i] == "Keeping":
+                    print(f" {face_icons[dice_output[i] - 1]}")
+                    time.sleep(0.3)
+
+                else:
+                    print(f" {face_icons[dice_output[rand] - 1]}")
+                    time.sleep(0.3)
+
         time.sleep(1)
-        
+            
         rerolls += 1
         os.system('cls' if os.name == 'nt' else 'clear') 
 
-
-        if rerolls == 5:
+        if rerolls == 3:
             reroll = False
 
 
