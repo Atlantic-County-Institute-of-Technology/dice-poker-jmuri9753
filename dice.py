@@ -7,12 +7,17 @@ import inquirer3
 import os
 
 dice = Dice()
+tries = 1
+max_rolls = 3
+players = [True]
 
 
-def play_dice():
-    tries = 1
+
+def single_player():
     global index
     global dice_output
+    global tries
+    global max_rolls
 
     dice_output = []
 
@@ -23,8 +28,12 @@ def play_dice():
 
     GAME = True
 
+    if tries == max_rolls:
+        GAME = False
+
     while GAME:
-        tries_remaining = 3 - tries
+        tries_remaining = max_rolls - tries
+
 
         print(f"Roll: {tries}  |  Re-roll's Remaining: {tries_remaining} \n")
 
@@ -63,10 +72,10 @@ def play_dice():
                 reroll_dice()
                 reroll_animation()                
                 os.system('cls' if os.name == 'nt' else 'clear') 
-                if tries == 3:
+                if tries == max_rolls:
                     GAME = False
     
-    if tries == 3:
+    if tries == max_rolls:
         print("""  ▄████  ▄▄▄       ███▄ ▄███▓▓█████     ▒█████   ██▒   █▓▓█████  ██▀███  
  ██▒ ▀█▒▒████▄    ▓██▒▀█▀ ██▒▓█   ▀    ▒██▒  ██▒▓██░   █▒▓█   ▀ ▓██ ▒ ██▒
 ▒██░▄▄▄░▒██  ▀█▄  ▓██    ▓██░▒███      ▒██░  ██▒ ▓██  █▒░▒███   ▓██ ░▄█ ▒
@@ -96,11 +105,13 @@ def play_dice():
                 for i in range(len(dice.store)):
                     dice.store[i] = "Rerolling"
                     dice_output[i] = dice.dice[i].roll_dice()
-                play_dice()
+                single_player()
             case "No":
                 print("Thank You For Playing!")
                 exit()
 
+def multiplayer():
+    print("egg")
 
 
 def change_keep():
@@ -173,7 +184,7 @@ def check_end_score():
 |   |___ |   | |       ||   |___   |  | |  ||   |___   |       |  |      _||   | |       || | |   ||  | 
 |    ___||   | |       ||    ___|  |  |_|  ||    ___|  |       |  |     |_ |   | |  _    || |_|   ||__| 
 |   |    |   |  |     | |   |___   |       ||   |      |   _   |  |    _  ||   | | | |   ||       | __  
-|___|    |___|   |___|  |_______|  |_______||___|      |__| |__|  |___| |_||___| |_|  |__||______| |__| """)
+|___|    |___|   |___|  |_______|  |_______||___|      |__| |__|  |___| |_||___| |_|  |__||______| |__| \n""")
     elif four_kind() == "Four":
         print(""" _______  _______  __   __  ______      _______  _______    _______    ___   _  ___   __    _  ______   __  
 |       ||       ||  | |  ||    _ |    |       ||       |  |   _   |  |   | | ||   | |  |  | ||      | |  | 
@@ -181,7 +192,7 @@ def check_end_score():
 |   |___ |  | |  ||  |_|  ||   |_||_   |  | |  ||   |___   |       |  |      _||   | |       || | |   ||  | 
 |    ___||  |_|  ||       ||    __  |  |  |_|  ||    ___|  |       |  |     |_ |   | |  _    || |_|   ||__| 
 |   |    |       ||       ||   |  | |  |       ||   |      |   _   |  |    _  ||   | | | |   ||       | __  
-|___|    |_______||_______||___|  |_|  |_______||___|      |__| |__|  |___| |_||___| |_|  |__||______| |__| """)
+|___|    |_______||_______||___|  |_|  |_______||___|      |__| |__|  |___| |_||___| |_|  |__||______| |__| \n""")
     elif full_house() == "Full":
         print( """_______  __   __  ___      ___        __   __  _______  __   __  _______  _______  __  
 |       ||  | |  ||   |    |   |      |  | |  ||       ||  | |  ||       ||       ||  | 
@@ -189,7 +200,7 @@ def check_end_score():
 |   |___ |  |_|  ||   |    |   |      |       ||  | |  ||  |_|  || |_____ |   |___ |  | 
 |    ___||       ||   |___ |   |___   |       ||  |_|  ||       ||_____  ||    ___||__| 
 |   |    |       ||       ||       |  |   _   ||       ||       | _____| ||   |___  __  
-|___|    |_______||_______||_______|  |__| |__||_______||_______||_______||_______||__|""" )
+|___|    |_______||_______||_______|  |__| |__||_______||_______||_______||_______||__| \n""" )
     elif straight() == "Straight":
         print( """_______    _______  _______  ______    _______  ___   _______  __   __  _______  __  
 |   _   |  |       ||       ||    _ |  |   _   ||   | |       ||  | |  ||       ||  | 
@@ -197,7 +208,7 @@ def check_end_score():
 |       |  | |_____   |   |  |   |_||_ |       ||   | |   | __ |       |  |   |  |  | 
 |       |  |_____  |  |   |  |    __  ||       ||   | |   ||  ||       |  |   |  |__| 
 |   _   |   _____| |  |   |  |   |  | ||   _   ||   | |   |_| ||   _   |  |   |   __  
-|__| |__|  |_______|  |___|  |___|  |_||__| |__||___| |_______||__| |__|  |___|  |__|""") 
+|__| |__|  |_______|  |___|  |___|  |_||__| |__||___| |_______||__| |__|  |___|  |__| \n""") 
     elif three_kind() == "Three":
         print( """_______  __   __  ______    _______  _______    _______  _______    _______    ___   _  ___   __    _  ______   __  
 |       ||  | |  ||    _ |  |       ||       |  |       ||       |  |   _   |  |   | | ||   | |  |  | ||      | |  | 
@@ -205,7 +216,7 @@ def check_end_score():
   |   |  |       ||   |_||_ |   |___ |   |___   |  | |  ||   |___   |       |  |      _||   | |       || | |   ||  | 
   |   |  |       ||    __  ||    ___||    ___|  |  |_|  ||    ___|  |       |  |     |_ |   | |  _    || |_|   ||__| 
   |   |  |   _   ||   |  | ||   |___ |   |___   |       ||   |      |   _   |  |    _  ||   | | | |   ||       | __  
-  |___|  |__| |__||___|  |_||_______||_______|  |_______||___|      |__| |__|  |___| |_||___| |_|  |__||______| |__|""" )
+  |___|  |__| |__||___|  |_||_______||_______|  |_______||___|      |__| |__|  |___| |_||___| |_|  |__||______| |__|\n """ )
     elif two_pair() == "Two Pair":
         print( """_______  _     _  _______    _______  _______  ___   ______    __  
 |       || | _ | ||       |  |       ||   _   ||   | |    _ |  |  | 
@@ -213,7 +224,7 @@ def check_end_score():
   |   |  |       ||  | |  |  |   |_| ||       ||   | |   |_||_ |  | 
   |   |  |       ||  |_|  |  |    ___||       ||   | |    __  ||__| 
   |   |  |   _   ||       |  |   |    |   _   ||   | |   |  | | __  
-  |___|  |__| |__||_______|  |___|    |__| |__||___| |___|  |_||__| """)
+  |___|  |__| |__||_______|  |___|    |__| |__||___| |___|  |_||__| \n""")
     elif two_kind() == "Two Kind":
         print( """_______  _     _  _______    _______  _______    _______    ___   _  ___   __    _  ______   __  
 |       || | _ | ||       |  |       ||       |  |   _   |  |   | | ||   | |  |  | ||      | |  | 
@@ -221,7 +232,7 @@ def check_end_score():
   |   |  |       ||  | |  |  |  | |  ||   |___   |       |  |      _||   | |       || | |   ||  | 
   |   |  |       ||  |_|  |  |  |_|  ||    ___|  |       |  |     |_ |   | |  _    || |_|   ||__| 
   |   |  |   _   ||       |  |       ||   |      |   _   |  |    _  ||   | | | |   ||       | __  
-  |___|  |__| |__||_______|  |_______||___|      |__| |__|  |___| |_||___| |_|  |__||______| |__|""" )
+  |___|  |__| |__||_______|  |_______||___|      |__| |__|  |___| |_||___| |_|  |__||______| |__| \n""" )
     else:
         print( """ _______  _______  _______    __    _  _______    _______  _______  ___   ______    _______          _______  _______    __   __  __    _  ___      __   __  _______  ___   _  __   __  __  
 |       ||       ||       |  |  |  | ||       |  |       ||   _   ||   | |    _ |  |       |        |       ||       |  |  | |  ||  |  | ||   |    |  | |  ||       ||   | | ||  | |  ||  | 
@@ -229,7 +240,7 @@ def check_end_score():
 |   | __ |  | |  |  |   |    |       ||  | |  |  |   |_| ||       ||   | |   |_||_ | |_____         | |_____ |  | |  |  |  |_|  ||       ||   |    |  |_|  ||       ||      _||       ||  | 
 |   ||  ||  |_|  |  |   |    |  _    ||  |_|  |  |    ___||       ||   | |    __  ||_____  | ___    |_____  ||  |_|  |  |       ||  _    ||   |___ |       ||      _||     |_ |_     _||__| 
 |   |_| ||       |  |   |    | | |   ||       |  |   |    |   _   ||   | |   |  | | _____| ||   |    _____| ||       |  |       || | |   ||       ||       ||     |_ |    _  |  |   |   __  
-|_______||_______|  |___|    |_|  |__||_______|  |___|    |__| |__||___| |___|  |_||_______||___|   |_______||_______|  |_______||_|  |__||_______||_______||_______||___| |_|  |___|  |__| """ )
+|_______||_______|  |___|    |_|  |__||_______|  |___|    |__| |__||___| |___|  |_||_______||___|   |_______||_______|  |_______||_|  |__||_______||_______||_______||___| |_|  |___|  |__| \n""" )
 
     
 def five_kind():
@@ -317,6 +328,42 @@ def display_dice():
     # print(f"Dice Rolled:\n {face_icons[dice_output[0] - 1]} {face_icons[dice_output[1] - 1]} {face_icons[dice_output[2] - 1]} {face_icons[dice_output[3] - 1]} {face_icons[dice_output[4] - 1]} ")        
 
 
+def change_rolls():
+    global max_rolls
+
+    while True:
+        print(f"Current Rolls: {max_rolls}") 
+
+        answer = prompt_menu("Would You Like to Increase or Decrease Your Amount Of Rolls?", ["Increment", "Decrement", "Done"])
+
+        match answer:
+            case "Increment":
+                rolls_add()
+            case "Decrement":
+                rolls_subtract()
+            case "Done":
+                print(f"You Now Have {max_rolls} Rolls")
+                time.sleep(1)
+                return max_rolls
+
+def rolls_add():
+    global max_rolls
+
+    if max_rolls <= 9:
+        max_rolls += 1
+    else:
+        print("[!] ERROR! THE MAX NUMBER OF ROLLS IS 10! \n")
+
+
+def rolls_subtract():
+    global max_rolls
+
+    if max_rolls > 1:
+        max_rolls -= 1
+    else:
+        print("[!] ERROR! THE MINIMUM NUMBER OF ROLLS IS 1! \n")
+
+
 def prompt_menu(messages, user_choices): # Function that uses inquirer3 list to make it easy to print out a menu for the user with options.
     # messages and user_choices are parameters that we can give values when we call the function to make a menu as we want it
     menu = [
@@ -331,19 +378,26 @@ def prompt_menu(messages, user_choices): # Function that uses inquirer3 list to 
 
 
 def main():
-    print("""     ___     __  __      ___   _____     __   __  ___    __  __      ___ __  
-|  ||__ |   /  `/  \|\/||__     |/  \   |  \|/  `|__    |__)/  \|__/|__ |__) 
-|/\||___|___\__,\__/|  ||___    |\__/   |__/|\__,|___   |   \__/|  \|___|  \ 
-                                                                             """)
-    
-    answer = prompt_menu("Please Select An Option",["Exit", "Play Game"] )
+    print("""╦ ╦┌─┐┬  ┌─┐┌─┐┌┬┐┌─┐  ┌┬┐┌─┐  ┌┬┐┬┌─┐┌─┐  ┌─┐┌─┐┬┌─┌─┐┬─┐┬
+║║║├┤ │  │  │ ││││├┤    │ │ │   ││││  ├┤   ├─┘│ │├┴┐├┤ ├┬┘│
+╚╩╝└─┘┴─┘└─┘└─┘┴ ┴└─┘   ┴ └─┘  ─┴┘┴└─┘└─┘  ┴  └─┘┴ ┴└─┘┴└─o""")
 
-    match answer:
-        case "Exit":
-            print("[!] Thank Your For Playing!")
-            exit()
-        case "Play Game":
-            play_dice()
+    while True:
+
+
+    
+        answer = prompt_menu("Please Select An Option",["Exit", "Single Player", "Change Rolls", "Multiplayer"] )
+
+        match answer:
+            case "Exit":
+                print("[!] Thank You For Playing!")
+                exit()
+            case "Single Player":
+                single_player()
+            case "Change Rolls":
+                change_rolls()
+            case "Multiplayer":
+                multiplyer()
 
 if __name__ == "__main__":
     main()

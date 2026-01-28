@@ -6,12 +6,17 @@
 import random
 
 
+
 class Dice:
 
     def __init__(self):
         self.MAX_DICE = 5
         self.dice = []
         self.store = []
+        self.players_names = []
+        self.players_scores = []
+
+
 
         for i in range(self.MAX_DICE):
             self.dice.append(Die())
@@ -40,5 +45,6 @@ class Die:
 
 
 # if __name__ == '__main__':
-#     test = Die()
-#     print(f"This Is what you rolled {test.roll_dice()}, This is number of faces of the dice {test.get_value()}")
+#     test = Dice()
+#     print(test.players_scores)
+    # print(f"This Is what you rolled {test.roll_dice()}, This is number of faces of the dice {test.get_value()}")
