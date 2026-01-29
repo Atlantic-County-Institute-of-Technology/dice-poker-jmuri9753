@@ -4,7 +4,7 @@
 # Last Edit: 1.13.26
 
 import random
-
+import multiplayer
 
 
 class Dice:
@@ -16,6 +16,9 @@ class Dice:
         self.players_names = []
         self.players_scores = []
 
+        for i in range(len(multiplayer.players)):
+            self.players_scores.append(0)
+            # self.players_names.append(multiplayer.player_names[i])
 
 
         for i in range(self.MAX_DICE):

@@ -1,6 +1,7 @@
 
 from die import Dice
 from face import face_icons
+from multiplayer import player_names,players
 import random
 import time
 import inquirer3
@@ -9,7 +10,7 @@ import os
 dice = Dice()
 tries = 1
 max_rolls = 3
-players = [True]
+
 
 
 
@@ -111,8 +112,116 @@ def single_player():
                 exit()
 
 def multiplayer():
-    print("egg")
+    global index
+    global dice_output
+    global tries
+    global max_rolls
+    global players,player_names
 
+    status = True
+
+    while status:
+        answer = prompt_menu("Please Select An Option",["Players Playing", "Player Names", "Play"])
+
+        match answer:
+            case "Players Playing":
+                players_playing()
+            case "Player Names":
+                pass
+            case "Play":
+                pass
+
+def players_playing():
+    global players
+    global player
+
+    status = True
+
+    
+
+    while status:
+        current_players = 0
+
+        for i in range(len(players)):
+            current_players += 1
+
+        print(f"Current Players: {current_players}\n")
+
+        answer = prompt_menu("Please Select An Option",["2 Players", "3 Players", "4 Players","5 Players", "Custom Players"])
+
+        match answer:
+            case "2 Players":
+                player = 2
+                players = []
+
+                for i in range(player):
+                    players.append(True)
+                
+            case "3 Players":
+                player = 3
+                players = []
+
+                for i in range(player):
+                    players.append(True)
+            case "4 Players":
+                player = 4
+                players = []
+
+                for i in range(player):
+                    players.append(True)
+            case "5 Players":
+                player = 5
+                players = []
+
+                for i in range(player):
+                    players.append(True)
+            case "Custom Players":
+                while True:
+                    current_players = 0
+
+                    for i in range(len(players)):
+                        current_players += 1
+
+                    print(f"Current Players: {current_players}")
+
+                    answer = prompt_menu("Please Select What You Would Like To Do", ["Increment Players", "Decrement Players", "Done"])
+
+                    match answer:
+                        case "Increment Players":
+                            custom_players_increase()
+                        case "Decrement Players":
+                            custom_players_decrease()
+                        case "Done":
+                            pass
+
+def custom_players_increase():
+    global players
+    global player
+
+    player = 0
+
+    for i in range(len(players)):
+        player += 1
+
+    if player <= 9:
+        players.append(True)
+    else:
+        print("ERROR! MAXIMUM NUMBER OF PLAYERS IS 10!")
+
+def custom_players_decrease():
+    global players
+    global player
+
+    if range(len(players)) == 0:
+        print("ERROR! YOU NEED TO AT LEAST HAVE 2 PLAYERS")
+
+
+    if player >= 2:
+        player -= 1
+        players.pop()
+    else:
+        print("ERROR! MINIMUM NUMBER OF PLAYERS IS 2!")
+    
 
 def change_keep():
     global index 
@@ -397,7 +506,7 @@ def main():
             case "Change Rolls":
                 change_rolls()
             case "Multiplayer":
-                multiplyer()
+                multiplayer()
 
 if __name__ == "__main__":
     main()

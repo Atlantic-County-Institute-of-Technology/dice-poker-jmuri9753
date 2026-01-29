@@ -1,0 +1,2 @@
+players = []
+player_names = []
