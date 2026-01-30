@@ -13,12 +13,12 @@ class Dice:
         self.MAX_DICE = 5
         self.dice = []
         self.store = []
-        self.players_names = []
-        self.players_scores = []
+        # self.players_names = []
+        # self.players_scores = []
 
-        for i in range(len(multiplayer.players)):
-            self.players_scores.append(0)
-            # self.players_names.append(multiplayer.player_names[i])
+        # for i in range(len(multiplayer.players)):
+        #     self.players_scores.append(0)
+        #     # self.players_names.append(multiplayer.player_names[i])
 
 
         for i in range(self.MAX_DICE):

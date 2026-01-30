@@ -1,7 +1,7 @@
 
 from die import Dice
 from face import face_icons
-from multiplayer import player_names,players
+from multiplayer import player_names,players,player_scores
 import random
 import time
 import inquirer3
@@ -10,8 +10,6 @@ import os
 dice = Dice()
 tries = 1
 max_rolls = 3
-
-
 
 
 def single_player():
@@ -40,14 +38,14 @@ def single_player():
 
         display_dice()
 
-        print(f"Dice #1: {dice_output[0]}\n"
-            f"Dice #2: {dice_output[1]}\n"
-            f"Dice #3: {dice_output[2]}\n"
-            f"Dice #4: {dice_output[3]}\n"
-            f"Dice #5: {dice_output[4]}\n"
+        print(f"Dice #1: {dice_output[0]} | {dice.store[0]}\n"
+            f"Dice #2: {dice_output[1]} | {dice.store[1]}\n"
+            f"Dice #3: {dice_output[2]} | {dice.store[2]}\n"
+            f"Dice #4: {dice_output[3]} | {dice.store[3]}\n"
+            f"Dice #5: {dice_output[4]} | {dice.store[4]}\n"
             )
         
-        print(f"This Shows The Dices Your Keeping Or Rerolling: {dice.store}")
+        # print(f"This Shows The Dices Your Keeping Or Rerolling: {dice.store}")
 
         
         answer = prompt_menu("Please Select An Option", ["Keep Dice #1","Keep Dice #2","Keep Dice #3","Keep Dice #4","Keep Dice #5", "Reroll"])
@@ -106,9 +104,10 @@ def single_player():
                 for i in range(len(dice.store)):
                     dice.store[i] = "Rerolling"
                     dice_output[i] = dice.dice[i].roll_dice()
+                tries = 1
                 single_player()
             case "No":
-                print("Thank You For Playing!")
+                print("[!] Thank You For Playing!")
                 exit()
 
 def multiplayer():
@@ -121,25 +120,40 @@ def multiplayer():
     status = True
 
     while status:
-        answer = prompt_menu("Please Select An Option",["Players Playing", "Player Names", "Play"])
+        answer = prompt_menu("Please Select An Option",["Players Playing", "Player Names", "Play", "Return To Main Menu"])
 
         match answer:
             case "Players Playing":
                 players_playing()
             case "Player Names":
-                pass
+                player_naming()
             case "Play":
                 pass
+            case "Return To Main Menu":
+                return
+
+def player_naming():
+    global player_naming
+
+    while True:
+        current_players = 0
+
+        for i in range(len(players)):
+            current_players += 1
+
+        print(f"Players: {current_players}\n")
+
+        try:
+            selection = int(input("Please Input Which Player's Name You Would Like To Change (Example: For Player 1 Input 1): "))
+
+        except Exception as e:
+            print("ERROR! PLEASE INPUT A NUMBER")
 
 def players_playing():
-    global players
-    global player
-
-    status = True
+    global players,player,player_scores, player_names
 
     
-
-    while status:
+    while True:
         current_players = 0
 
         for i in range(len(players)):
@@ -147,34 +161,55 @@ def players_playing():
 
         print(f"Current Players: {current_players}\n")
 
-        answer = prompt_menu("Please Select An Option",["2 Players", "3 Players", "4 Players","5 Players", "Custom Players"])
+        answer = prompt_menu("Please Select An Option",["2 Players", "3 Players", "4 Players","5 Players", "Custom Players", "Return To Previous Menu"])
 
         match answer:
             case "2 Players":
                 player = 2
                 players = []
+                player_scores = []
+                player_names = []
+
 
                 for i in range(player):
                     players.append(True)
+                    player_scores.append(0)
+                    player_names.append("Player " + str(i + 1))
+                
                 
             case "3 Players":
                 player = 3
                 players = []
+                player_scores = []
+                player_names = []
 
                 for i in range(player):
                     players.append(True)
+                    player_scores.append(0)
+                    player_names.append("Player " + str(i + 1))
+
             case "4 Players":
                 player = 4
                 players = []
+                player_scores = []
+                player_names = []
 
                 for i in range(player):
                     players.append(True)
+                    player_scores.append(0)
+                    player_names.append("Player " + str(i + 1))
+
             case "5 Players":
                 player = 5
                 players = []
+                player_scores = []
+                player_names = []
 
                 for i in range(player):
                     players.append(True)
+                    player_scores.append(0)
+                    player_names.append("Player " + str(i + 1))
+
             case "Custom Players":
                 while True:
                     current_players = 0
@@ -183,20 +218,23 @@ def players_playing():
                         current_players += 1
 
                     print(f"Current Players: {current_players}")
-
-                    answer = prompt_menu("Please Select What You Would Like To Do", ["Increment Players", "Decrement Players", "Done"])
+                    
+                    answer = prompt_menu("Please Select What You Would Like To Do", ["Increment Players", "Decrement Players", "Return To Previous Menu"])
 
                     match answer:
                         case "Increment Players":
                             custom_players_increase()
                         case "Decrement Players":
                             custom_players_decrease()
-                        case "Done":
-                            pass
+                        case "Return To Previous Menu":
+                            return
+                        
+            case "Return To Previous Menu":
+                return
+                            
 
 def custom_players_increase():
-    global players
-    global player
+    global players, player, player_scores, player_names
 
     player = 0
 
@@ -204,23 +242,29 @@ def custom_players_increase():
         player += 1
 
     if player <= 9:
+        player_names = []
         players.append(True)
+        player_scores.append(0)
+        for i in range(len(players)):
+            player_names.append("Player " + str(i + 1))
+
     else:
-        print("ERROR! MAXIMUM NUMBER OF PLAYERS IS 10!")
+        print("ERROR! MAXIMUM NUMBER OF PLAYERS IS 10! \n")
 
 def custom_players_decrease():
-    global players
-    global player
+    global player,players,player_scores, player_names
 
     if range(len(players)) == 0:
-        print("ERROR! YOU NEED TO AT LEAST HAVE 2 PLAYERS")
-
+        print("ERROR! YOU NEED TO AT LEAST HAVE 2 PLAYERS \n")
 
     if player >= 2:
         player -= 1
         players.pop()
+        player_scores.pop()
+        player_names.pop()
+
     else:
-        print("ERROR! MINIMUM NUMBER OF PLAYERS IS 2!")
+        print("ERROR! MINIMUM NUMBER OF PLAYERS IS 2! \n")
     
 
 def change_keep():
@@ -487,13 +531,12 @@ def prompt_menu(messages, user_choices): # Function that uses inquirer3 list to 
 
 
 def main():
-    print("""╦ ╦┌─┐┬  ┌─┐┌─┐┌┬┐┌─┐  ┌┬┐┌─┐  ┌┬┐┬┌─┐┌─┐  ┌─┐┌─┐┬┌─┌─┐┬─┐┬
-║║║├┤ │  │  │ ││││├┤    │ │ │   ││││  ├┤   ├─┘│ │├┴┐├┤ ├┬┘│
-╚╩╝└─┘┴─┘└─┘└─┘┴ ┴└─┘   ┴ └─┘  ─┴┘┴└─┘└─┘  ┴  └─┘┴ ┴└─┘┴└─o""")
 
     while True:
 
-
+        print("""╦ ╦┌─┐┬  ┌─┐┌─┐┌┬┐┌─┐  ┌┬┐┌─┐  ┌┬┐┬┌─┐┌─┐  ┌─┐┌─┐┬┌─┌─┐┬─┐┬
+║║║├┤ │  │  │ ││││├┤    │ │ │   ││││  ├┤   ├─┘│ │├┴┐├┤ ├┬┘│
+╚╩╝└─┘┴─┘└─┘└─┘┴ ┴└─┘   ┴ └─┘  ─┴┘┴└─┘└─┘  ┴  └─┘┴ ┴└─┘┴└─o""")
     
         answer = prompt_menu("Please Select An Option",["Exit", "Single Player", "Change Rolls", "Multiplayer"] )
 
