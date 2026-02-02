@@ -11,18 +11,13 @@ dice = Dice()
 tries = 1
 max_rolls = 3
 played_players = 1
-players_play = len(players)
 single_status = False
 multi_status = False
 
 
 
 def single_player():
-    global index
-    global dice_output
-    global tries
-    global max_rolls
-    global single_status
+    global index, dice_output, tries, max_rolls,single_status
 
     dice_output = []
 
@@ -30,6 +25,7 @@ def single_player():
         dices_values = dice.dice[i].roll_dice()
         dice_output.append(dices_values)
 
+    single_status = False
 
     GAME = True
 
@@ -115,17 +111,16 @@ def single_player():
                 exit()
 
 def play_multi():
-    global index
-    global dice_output
-    global tries
-    global max_rolls, multi_status, played_players, players, players_play
+    global index,dice_output,tries,max_rolls, multi_status, played_players, players, players_play
 
     dice_output = []
-
+    players_play = len(players)
+    
     for i in range(dice.MAX_DICE):
         dices_values = dice.dice[i].roll_dice()
         dice_output.append(dices_values)
 
+    multi_status = False
 
     GAME = True
 
@@ -135,7 +130,7 @@ def play_multi():
     while GAME:
         tries_remaining = max_rolls - tries
 
-        print(f"Player {played_players}'s Turn!\n")
+        print(f"{player_names[played_players - 1]}'s Turn!\n")
         print(f"Roll: {tries}  |  Re-roll's Remaining: {tries_remaining} \n")
 
         display_dice()
@@ -169,76 +164,111 @@ def play_multi():
             case "Reroll":
                 tries += 1
                 reroll_dice()
-                reroll_animation()                
+                # reroll_animation()  
                 os.system('cls' if os.name == 'nt' else 'clear') 
                 if tries == max_rolls:
                     GAME = False
-    if played_players == players_play:
-        print("""  ▄████  ▄▄▄       ███▄ ▄███▓▓█████     ▒█████   ██▒   █▓▓█████  ██▀███  
- ██▒ ▀█▒▒████▄    ▓██▒▀█▀ ██▒▓█   ▀    ▒██▒  ██▒▓██░   █▒▓█   ▀ ▓██ ▒ ██▒
-▒██░▄▄▄░▒██  ▀█▄  ▓██    ▓██░▒███      ▒██░  ██▒ ▓██  █▒░▒███   ▓██ ░▄█ ▒
-░▓█  ██▓░██▄▄▄▄██ ▒██    ▒██ ▒▓█  ▄    ▒██   ██░  ▒██ █░░▒▓█  ▄ ▒██▀▀█▄  
-░▒▓███▀▒ ▓█   ▓██▒▒██▒   ░██▒░▒████▒   ░ ████▓▒░   ▒▀█░  ░▒████▒░██▓ ▒██▒
- ░▒   ▒  ▒▒   ▓▒█░░ ▒░   ░  ░░░ ▒░ ░   ░ ▒░▒░▒░    ░ ▐░  ░░ ▒░ ░░ ▒▓ ░▒▓░
-  ░   ░   ▒   ▒▒ ░░  ░      ░ ░ ░  ░     ░ ▒ ▒░    ░ ░░   ░ ░  ░  ░▒ ░ ▒░
-░ ░   ░   ░   ▒   ░      ░      ░      ░ ░ ░ ▒       ░░     ░     ░░   ░ 
-      ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░     
-                                                     ░                   """)
-
-        display_dice()
-
-        print(f"Dice #1: {dice_output[0]}\n"
-            f"Dice #2: {dice_output[1]}\n"
-            f"Dice #3: {dice_output[2]}\n"
-            f"Dice #4: {dice_output[3]}\n"
-            f"Dice #5: {dice_output[4]}\n"
-            )
-        
-        print("LOSER")
-        time.sleep(2)
-
+    
 
     if tries == max_rolls:
-        print("""  ▄████  ▄▄▄       ███▄ ▄███▓▓█████     ▒█████   ██▒   █▓▓█████  ██▀███  
- ██▒ ▀█▒▒████▄    ▓██▒▀█▀ ██▒▓█   ▀    ▒██▒  ██▒▓██░   █▒▓█   ▀ ▓██ ▒ ██▒
-▒██░▄▄▄░▒██  ▀█▄  ▓██    ▓██░▒███      ▒██░  ██▒ ▓██  █▒░▒███   ▓██ ░▄█ ▒
-░▓█  ██▓░██▄▄▄▄██ ▒██    ▒██ ▒▓█  ▄    ▒██   ██░  ▒██ █░░▒▓█  ▄ ▒██▀▀█▄  
-░▒▓███▀▒ ▓█   ▓██▒▒██▒   ░██▒░▒████▒   ░ ████▓▒░   ▒▀█░  ░▒████▒░██▓ ▒██▒
- ░▒   ▒  ▒▒   ▓▒█░░ ▒░   ░  ░░░ ▒░ ░   ░ ▒░▒░▒░    ░ ▐░  ░░ ▒░ ░░ ▒▓ ░▒▓░
-  ░   ░   ▒   ▒▒ ░░  ░      ░ ░ ░  ░     ░ ▒ ▒░    ░ ░░   ░ ░  ░  ░▒ ░ ▒░
-░ ░   ░   ░   ▒   ░      ░      ░      ░ ░ ░ ▒       ░░     ░     ░░   ░ 
-      ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░     
-                                                     ░                   """)
 
-        display_dice()
+        if played_players == players_play:
+            print("""  ▄████  ▄▄▄       ███▄ ▄███▓▓█████     ▒█████   ██▒   █▓▓█████  ██▀███  
+    ██▒ ▀█▒▒████▄    ▓██▒▀█▀ ██▒▓█   ▀    ▒██▒  ██▒▓██░   █▒▓█   ▀ ▓██ ▒ ██▒
+    ▒██░▄▄▄░▒██  ▀█▄  ▓██    ▓██░▒███      ▒██░  ██▒ ▓██  █▒░▒███   ▓██ ░▄█ ▒
+    ░▓█  ██▓░██▄▄▄▄██ ▒██    ▒██ ▒▓█  ▄    ▒██   ██░  ▒██ █░░▒▓█  ▄ ▒██▀▀█▄  
+    ░▒▓███▀▒ ▓█   ▓██▒▒██▒   ░██▒░▒████▒   ░ ████▓▒░   ▒▀█░  ░▒████▒░██▓ ▒██▒
+    ░▒   ▒  ▒▒   ▓▒█░░ ▒░   ░  ░░░ ▒░ ░   ░ ▒░▒░▒░    ░ ▐░  ░░ ▒░ ░░ ▒▓ ░▒▓░
+    ░   ░   ▒   ▒▒ ░░  ░      ░ ░ ░  ░     ░ ▒ ▒░    ░ ░░   ░ ░  ░  ░▒ ░ ▒░
+    ░ ░   ░   ░   ▒   ░      ░      ░      ░ ░ ░ ▒       ░░     ░     ░░   ░ 
+        ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░     
+                                                        ░                   """)
 
-        print(f"Dice #1: {dice_output[0]}\n"
-            f"Dice #2: {dice_output[1]}\n"
-            f"Dice #3: {dice_output[2]}\n"
-            f"Dice #4: {dice_output[3]}\n"
-            f"Dice #5: {dice_output[4]}\n"
-            )
-        multi_status = True
-        check_end_score()
-        os.system('cls' if os.name == 'nt' else 'clear') 
+            display_dice()
 
-        played_players += 1
-        for i in range(len(dice.store)):
-            dice.store[i] = "Rerolling"
-            dice_output[i] = dice.dice[i].roll_dice()
-        tries = 1
-        play_multi()
+            print(f"Dice #1: {dice_output[0]}\n"
+                f"Dice #2: {dice_output[1]}\n"
+                f"Dice #3: {dice_output[2]}\n"
+                f"Dice #4: {dice_output[3]}\n"
+                f"Dice #5: {dice_output[4]}\n"
+                )
+            multi_status = True
+            check_end_score()
 
+            time.sleep(4)
 
-        
+            os.system('cls' if os.name == 'nt' else 'clear') 
+
+            print("STANDINGS \n")
+            for i in range(len(players)):
+                print(f"{i + 1}. {player_names[i]} - {player_scores[i]}")
+            
+            winning_score = max(player_scores)
+
+            score_count = player_scores.count(winning_score)
+
+            if score_count == 1:
+
+                winning_player = player_scores.index(winning_score)
+
+                print(f"\n[!] The Winning Player is {player_names[winning_player]} With A Score of {winning_score} \n")
+            
+            else:
+                print("\n[!] There Is No Winner! It's A Tie With Multiple Players! If You Want To Settle The Score... Play Again!\n")
+            
+            time.sleep(1)
+
+            answer = prompt_menu("Would You Like To Play Again?", ["Yes","No"])
+
+            match answer:
+                case "Yes":
+                    for i in range(len(players)):
+                        player_scores[i] = 0
+                    for i in range(len(dice.store)):
+                        dice.store[i] = "Rerolling"
+                        dice_output[i] = dice.dice[i].roll_dice()
+                    tries = 1
+                    played_players = 1
+                    play_multi()
+                case "No":
+                    print("[!] Thanks For Playing!")
+                    exit()
+        else:
+
+            print("""  ▄████  ▄▄▄       ███▄ ▄███▓▓█████     ▒█████   ██▒   █▓▓█████  ██▀███  
+    ██▒ ▀█▒▒████▄    ▓██▒▀█▀ ██▒▓█   ▀    ▒██▒  ██▒▓██░   █▒▓█   ▀ ▓██ ▒ ██▒
+    ▒██░▄▄▄░▒██  ▀█▄  ▓██    ▓██░▒███      ▒██░  ██▒ ▓██  █▒░▒███   ▓██ ░▄█ ▒
+    ░▓█  ██▓░██▄▄▄▄██ ▒██    ▒██ ▒▓█  ▄    ▒██   ██░  ▒██ █░░▒▓█  ▄ ▒██▀▀█▄  
+    ░▒▓███▀▒ ▓█   ▓██▒▒██▒   ░██▒░▒████▒   ░ ████▓▒░   ▒▀█░  ░▒████▒░██▓ ▒██▒
+    ░▒   ▒  ▒▒   ▓▒█░░ ▒░   ░  ░░░ ▒░ ░   ░ ▒░▒░▒░    ░ ▐░  ░░ ▒░ ░░ ▒▓ ░▒▓░
+    ░   ░   ▒   ▒▒ ░░  ░      ░ ░ ░  ░     ░ ▒ ▒░    ░ ░░   ░ ░  ░  ░▒ ░ ▒░
+    ░ ░   ░   ░   ▒   ░      ░      ░      ░ ░ ░ ▒       ░░     ░     ░░   ░ 
+        ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░     
+                                                        ░                   """)
+
+            display_dice()
+
+            print(f"Dice #1: {dice_output[0]}\n"
+                f"Dice #2: {dice_output[1]}\n"
+                f"Dice #3: {dice_output[2]}\n"
+                f"Dice #4: {dice_output[3]}\n"
+                f"Dice #5: {dice_output[4]}\n"
+                )
+            multi_status = True
+            check_end_score()
+            time.sleep(5)
+
+            os.system('cls' if os.name == 'nt' else 'clear') 
+
+            for i in range(len(dice.store)):
+                dice.store[i] = "Rerolling"
+                dice_output[i] = dice.dice[i].roll_dice()
+            tries = 1
+            played_players += 1
+            play_multi()
+
 
 def multiplayer():
-    global index
-    global dice_output
-    global tries
-    global max_rolls
-    global players,player_names
-
 
     while True:
         answer = prompt_menu("Please Select An Option",["Players Playing", "Player Names", "Play", "Return To Main Menu"])
@@ -268,17 +298,18 @@ def player_naming():
             selection = int(input("[-] Please Input Which Player's Name You Would Like To Change (Example: For Player 1 Input 1): "))
 
             
-
             if selection in range(1,len(player_names) + 1):
                 os.system('cls' if os.name == 'nt' else 'clear') 
 
                 print(f"[-] This Is Player {selection}'s Current Name: {player_names[selection - 1]}")    
 
-                name_change = input(f"What Would You Like To Change Player {selection}'s Name To? ")
+                name_change = input(f"[-] What Would You Like To Change Player {selection}'s Name To? ")
 
                 player_names[selection - 1] = name_change
 
-                print(f"[-] Player {selection}'s Name Has Been Changed To {name_change}...")
+                os.system('cls' if os.name == 'nt' else 'clear') 
+
+                print(f"[-] Player {selection}'s Name Has Been Changed To '{name_change}'. \n")
                 time.sleep(1)
 
                 answer = prompt_menu("Would You Like To Change Another Player's Name?", ["Yes", "No"])
@@ -300,7 +331,10 @@ def player_naming():
 
 
         except Exception as e:
-            print("ERROR! PLEASE INPUT A NUMBER")
+            print(f"[!] ERROR: {e} PLEASE INPUT AN INTEGER")
+            time.sleep(2)
+            os.system('cls' if os.name == 'nt' else 'clear') 
+
 
 def players_playing():
     global players,player,player_scores, player_names
@@ -312,7 +346,7 @@ def players_playing():
         for i in range(len(players)):
             current_players += 1
 
-        print(f"Current Players: {current_players}\nTip: If You Change The Name  of Your Players And Then Change Your Number Of Player, The Names Won't Save")
+        print(f"Current Players: {current_players}\nTip: If You Change The Name of Your Players And Then Change Your Number Of Players, The Names Won't Save")
 
         answer = prompt_menu("Please Select An Option",["2 Players", "3 Players", "4 Players","5 Players", "Custom Players", "Return To Previous Menu"])
 
@@ -406,13 +440,13 @@ def custom_players_increase():
             player_names.append("Player " + str(i + 1))
 
     else:
-        print("ERROR! MAXIMUM NUMBER OF PLAYERS IS 10! \n")
+        print("[!] ERROR! MAXIMUM NUMBER OF PLAYERS IS 10! \n")
 
 def custom_players_decrease():
     global player,players,player_scores, player_names
 
     if range(len(players)) == 0:
-        print("ERROR! YOU NEED TO AT LEAST HAVE 2 PLAYERS \n")
+        print("[!] ERROR! YOU NEED TO AT LEAST HAVE 2 PLAYERS \n")
 
     if player >= 2:
         player -= 1
@@ -421,7 +455,7 @@ def custom_players_decrease():
         player_names.pop()
 
     else:
-        print("ERROR! MINIMUM NUMBER OF PLAYERS IS 2! \n")
+        print("[!] ERROR! MINIMUM NUMBER OF PLAYERS IS 2! \n")
     
 
 def change_keep():
@@ -585,7 +619,6 @@ def check_end_score():
     |   |    |       ||       ||   |  | |  |       ||   |      |   _   |  |    _  ||   | | | |   ||       | __  
     |___|    |_______||_______||___|  |_|  |_______||___|      |__| |__|  |___| |_||___| |_|  |__||______| |__| \n""")
             player_scores[played_players - 1] += 6
-
         elif full_house() == "Full":
             print( """_______  __   __  ___      ___        __   __  _______  __   __  _______  _______  __  
     |       ||  | |  ||   |    |   |      |  | |  ||       ||  | |  ||       ||       ||  | 
@@ -632,13 +665,7 @@ def check_end_score():
     |___|  |__| |__||_______|  |_______||___|      |__| |__|  |___| |_||___| |_|  |__||______| |__| \n""" )
             player_scores[played_players - 1] += 1
         else:
-            print( """ _______  _______  _______    __    _  _______    _______  _______  ___   ______    _______          _______  _______    __   __  __    _  ___      __   __  _______  ___   _  __   __  __  
-    |       ||       ||       |  |  |  | ||       |  |       ||   _   ||   | |    _ |  |       |        |       ||       |  |  | |  ||  |  | ||   |    |  | |  ||       ||   | | ||  | |  ||  | 
-    |    ___||   _   ||_     _|  |   |_| ||   _   |  |    _  ||  |_|  ||   | |   | ||  |  _____|        |  _____||   _   |  |  | |  ||   |_| ||   |    |  | |  ||       ||   |_| ||  |_|  ||  | 
-    |   | __ |  | |  |  |   |    |       ||  | |  |  |   |_| ||       ||   | |   |_||_ | |_____         | |_____ |  | |  |  |  |_|  ||       ||   |    |  |_|  ||       ||      _||       ||  | 
-    |   ||  ||  |_|  |  |   |    |  _    ||  |_|  |  |    ___||       ||   | |    __  ||_____  | ___    |_____  ||  |_|  |  |       ||  _    ||   |___ |       ||      _||     |_ |_     _||__| 
-    |   |_| ||       |  |   |    | | |   ||       |  |   |    |   _   ||   | |   |  | | _____| ||   |    _____| ||       |  |       || | |   ||       ||       ||     |_ |    _  |  |   |   __  
-    |_______||_______|  |___|    |_|  |__||_______|  |___|    |__| |__||___| |___|  |_||_______||___|   |_______||_______|  |_______||_|  |__||_______||_______||_______||___| |_|  |___|  |__| \n""" )
+            print("NO COMINATIONS! THAT SUCKS!" )
     else:
         pass
 
@@ -685,11 +712,10 @@ def three_kind():
     global dice_output
     global num_scores
 
-    for i in range(len(dice_output)):
-        if num_scores[i] == 3:
-            return "Three"
-        else:
-            return None
+    if num_scores.count(3) == 1:
+        return "Three"
+    else:
+        return None
 
 def two_pair():
     global dice_output
@@ -698,7 +724,7 @@ def two_pair():
     if num_scores.count(2) == 2:
         return "Two Pair"
     else:
-        None
+        return None
 
 def two_kind():
     global dice_output
@@ -742,10 +768,9 @@ def change_rolls():
             case "Decrement":
                 rolls_subtract()
             case "Done":
-                print(f"You Now Have {max_rolls} Rolls")
+                print(f"[-] You Now Have {max_rolls} Rolls!")
                 time.sleep(1)
                 os.system('cls' if os.name == 'nt' else 'clear') 
-
                 return max_rolls
 
 def rolls_add():
