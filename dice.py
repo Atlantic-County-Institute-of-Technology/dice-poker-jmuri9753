@@ -167,7 +167,7 @@ def play_multi():
             case "Reroll":
                 tries += 1
                 reroll_dice()
-                # reroll_animation()  
+                reroll_animation()  
                 os.system('cls' if os.name == 'nt' else 'clear') 
                 if tries == max_rolls:
                     GAME = False
@@ -677,21 +677,20 @@ def five_kind():
     global dice_output
     global num_scores
 
-    for i in range(len(dice_output)):
-        if num_scores[i] == 5:
-            return "Five"
-        else:
-            return None
+    
+    if num_scores.count(5) == 1:
+        return "Five"
+    else:
+        return None
         
 def four_kind():
     global dice_output
     global num_scores
 
-    for i in range(len(dice_output)):
-        if num_scores[i] == 4:
-            return "Four"
-        else:
-            return None
+    if num_scores.count(4) == 1:
+        return "Four"
+    else:
+        return None
         
 def full_house():
     global dice_output
