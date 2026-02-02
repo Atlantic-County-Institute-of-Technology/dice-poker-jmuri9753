@@ -1,3 +1,6 @@
+# Author: Jayden Murillo
+# Created: 1.13.26
+# Last Edit: 2.1.26
 
 from die import Dice
 from face import face_icons
@@ -751,7 +754,6 @@ def display_dice():
 
     for i in range(len(dice_output)):
         print(f" {face_icons[dice_output[i] - 1]}")
-    # print(f"Dice Rolled:\n {face_icons[dice_output[0] - 1]} {face_icons[dice_output[1] - 1]} {face_icons[dice_output[2] - 1]} {face_icons[dice_output[3] - 1]} {face_icons[dice_output[4] - 1]} ")        
 
 
 def change_rolls():
