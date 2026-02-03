@@ -5,47 +5,47 @@
 from die import Dice
 from face import face_icons
 from multiplayer import player_names,players,player_scores
-import random
+import random  # Imports packages and variables from other files that can be used
 import time
 import inquirer3
 import os
 
-dice = Dice()
+dice = Dice() 
 tries = 1
-max_rolls = 3
+max_rolls = 3   # Sets a varible for the dice object, the player tries and max rolls, how many players have played and the status of the playing functions, depends on if the game ends or not.
 played_players = 1
 single_status = False
 multi_status = False
 
 
 
-def single_player():
-    global index, dice_output, tries, max_rolls,single_status
+def single_player(): # Single player function
+    global index, dice_output, tries, max_rolls,single_status # Allows these variables to be used in this function and others.
 
-    dice_output = []
+    dice_output = [] # Placeholder list for 5 dices values
 
     for i in range(dice.MAX_DICE):
         dices_values = dice.dice[i].roll_dice()
-        dice_output.append(dices_values)
+        dice_output.append(dices_values) # Appends 5 dice values into the placeholder list after rolling the 5 dices
 
-    single_status = False
+    single_status = False # Resets single player status when function is recalled
 
-    GAME = True
+    GAME = True # Sets game status as true
 
     if tries == max_rolls:
-        GAME = False
+        GAME = False # Stops game if the number of tries of the players roll is equal to the max rolls they have. Because once the user starts the game a roll takes place.
 
     while GAME:
-        tries_remaining = max_rolls - tries
+        tries_remaining = max_rolls - tries # Variable for the number of tries the player has left
 
 
         print(f"Roll: {tries}  |  Re-roll's Remaining: {tries_remaining} \n")
 
-        display_dice()
+        display_dice() # Displays to the user their tries, tries maining and a visual of the dice
 
         print(f"Dice #1: {dice_output[0]} | {dice.store[0]}\n"
             f"Dice #2: {dice_output[1]} | {dice.store[1]}\n"
-            f"Dice #3: {dice_output[2]} | {dice.store[2]}\n"
+            f"Dice #3: {dice_output[2]} | {dice.store[2]}\n"  # Shows the user the number they rolled and whether they are keeping that dice when rerolling
             f"Dice #4: {dice_output[3]} | {dice.store[3]}\n"
             f"Dice #5: {dice_output[4]} | {dice.store[4]}\n"
             )
@@ -63,7 +63,7 @@ def single_player():
             case "Keep Dice #3":
                 index = 2
                 change_keep()                
-            case "Keep Dice #4":
+            case "Keep Dice #4":       # Sets a global index depending on what dice the user chooses to keep or reroll and then changes that dices keep or reroll status
                 index = 3
                 change_keep()                
             case "Keep Dice #5":
@@ -72,10 +72,10 @@ def single_player():
             case "Reroll":
                 tries += 1
                 reroll_dice()
-                reroll_animation()                
-                os.system('cls' if os.name == 'nt' else 'clear') 
+                reroll_animation()              # Add tries, rerolls the users dice but only the ones with te status of rerolling, and gives the user a visual of the dice rerolling   
+                os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
                 if tries == max_rolls:
-                    GAME = False
+                    GAME = False # Stops the loop that allows the user to reroll and keep dice after they use their max number of rolls
     
     if tries == max_rolls:
         print("""  ▄████  ▄▄▄       ███▄ ▄███▓▓█████     ▒█████   ██▒   █▓▓█████  ██▀███  
@@ -89,58 +89,59 @@ def single_player():
       ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░     
                                                      ░                   """)
 
-        display_dice()
+        display_dice()  # Displays to the user their final rolled dice and tells them that the game ended
 
         print(f"Dice #1: {dice_output[0]}\n"
             f"Dice #2: {dice_output[1]}\n"
-            f"Dice #3: {dice_output[2]}\n"
+            f"Dice #3: {dice_output[2]}\n" # Also displays their final dice numbers that they got after rolling all the times they could
             f"Dice #4: {dice_output[3]}\n"
             f"Dice #5: {dice_output[4]}\n"
             )
-        single_status = True
-        check_end_score()
+        
+        single_status = True # Switches singke player status to true because the game ended. This is for the-
+        check_end_score() # -check end score function that only displays to the user what they got depending on their score for single player depending on the status
         
         answer = prompt_menu("Would You Like To Play Again?", ["Yes", "No"])
 
         match answer:
             case "Yes":
                 for i in range(len(dice.store)):
-                    dice.store[i] = "Rerolling"
+                    dice.store[i] = "Rerolling" # Gives the user an option to play again and if so, resets the keeping or rerolling of all the dice to all rerolling and rerolls dice, resets the user tries, and then recalls the function for the user to play again.
                     dice_output[i] = dice.dice[i].roll_dice()
                 tries = 1
                 single_player()
             case "No":
-                print("[!] Thank You For Playing!")
+                print("[!] Thank You For Playing!") # If the user doesn't want to, the program ends and thanks the user for playing
                 exit()
 
-def play_multi():
+def play_multi(): # Multiplayer function
     global index,dice_output,tries,max_rolls, multi_status, played_players, players, players_play
-
-    dice_output = []
-    players_play = len(players)
+    # Allows these variables to be used in this function and others.
+    dice_output = [] # Placeholder list for 5 dices values
+    players_play = len(players) # This is a variable for the number of people playing
     
     for i in range(dice.MAX_DICE):
         dices_values = dice.dice[i].roll_dice()
-        dice_output.append(dices_values)
+        dice_output.append(dices_values) # Appends 5 dice values into the placeholder list after rolling the 5 dices
 
-    multi_status = False
+    multi_status = False # Resets multiplayer status when function is recalled
 
-    GAME = True
+    GAME = True # Sets game status as true
 
     if tries == max_rolls:
-        GAME = False
+        GAME = False # Stops game if the number of tries of the players roll is equal to the max rolls they have. Because once the user starts the game a roll takes place.
 
     while GAME:
-        tries_remaining = max_rolls - tries
+        tries_remaining = max_rolls - tries # Variable for the number of tries the player has left
 
-        print(f"{player_names[played_players - 1]}'s Turn!\n")
+        print(f"{player_names[played_players - 1]}'s Turn!\n") # Displays the players name or the name saved for the player depending on the played_players variable
         print(f"Roll: {tries}  |  Re-roll's Remaining: {tries_remaining} \n")
 
-        display_dice()
+        display_dice() # Displays to the user their tries, tries maining and a visual of the dice
 
         print(f"Dice #1: {dice_output[0]} | {dice.store[0]}\n"
             f"Dice #2: {dice_output[1]} | {dice.store[1]}\n"
-            f"Dice #3: {dice_output[2]} | {dice.store[2]}\n"
+            f"Dice #3: {dice_output[2]} | {dice.store[2]}\n"  # Shows the user the number they rolled and whether they are keeping that dice when rerolling
             f"Dice #4: {dice_output[3]} | {dice.store[3]}\n"
             f"Dice #5: {dice_output[4]} | {dice.store[4]}\n"
             )
@@ -158,7 +159,7 @@ def play_multi():
             case "Keep Dice #3":
                 index = 2
                 change_keep()                
-            case "Keep Dice #4":
+            case "Keep Dice #4": # Sets a global index depending on what dice the user chooses to keep or reroll and then changes that dices keep or reroll status
                 index = 3
                 change_keep()                
             case "Keep Dice #5":
@@ -167,15 +168,15 @@ def play_multi():
             case "Reroll":
                 tries += 1
                 reroll_dice()
-                reroll_animation()  
-                os.system('cls' if os.name == 'nt' else 'clear') 
+                reroll_animation()   # Add tries, rerolls the users dice but only the ones with te status of rerolling, and gives the user a visual of the dice rerolling   
+                os.system('cls' if os.name == 'nt' else 'clear')  # Clears terminal of previous code
                 if tries == max_rolls:
-                    GAME = False
+                    GAME = False # Stops the loop that allows the user to reroll and keep dice after they use their max number of rolls
     
 
-    if tries == max_rolls:
+    if tries == max_rolls: # If the player uses all their tries then... something happens depending on if all the players played yet or not
 
-        if played_players == players_play:
+        if played_players == players_play: # If all the players played then...
             print("""  ▄████  ▄▄▄       ███▄ ▄███▓▓█████     ▒█████   ██▒   █▓▓█████  ██▀███  
     ██▒ ▀█▒▒████▄    ▓██▒▀█▀ ██▒▓█   ▀    ▒██▒  ██▒▓██░   █▒▓█   ▀ ▓██ ▒ ██▒
     ▒██░▄▄▄░▒██  ▀█▄  ▓██    ▓██░▒███      ▒██░  ██▒ ▓██  █▒░▒███   ▓██ ░▄█ ▒
@@ -187,39 +188,41 @@ def play_multi():
         ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░     
                                                         ░                   """)
 
-            display_dice()
+            display_dice() # Displays the last players rolled dice when all the players have went and says game over for all the players
 
             print(f"Dice #1: {dice_output[0]}\n"
                 f"Dice #2: {dice_output[1]}\n"
-                f"Dice #3: {dice_output[2]}\n"
+                f"Dice #3: {dice_output[2]}\n" # Also displays the last players dice values after all the players have went because if not, then the final player wouldn't be able to see it
                 f"Dice #4: {dice_output[3]}\n"
                 f"Dice #5: {dice_output[4]}\n"
                 )
-            multi_status = True
-            check_end_score()
-
-            time.sleep(4)
-
-            os.system('cls' if os.name == 'nt' else 'clear') 
-
-            print("STANDINGS \n")
-            for i in range(len(players)):
-                print(f"{i + 1}. {player_names[i]} - {player_scores[i]}")
             
-            winning_score = max(player_scores)
+            multi_status = True
+            # Switches multiplayer status to true because the game ended. This is for the-
+            check_end_score() # -check end score function that does things for both single player and multiplayer depending on the status
 
-            score_count = player_scores.count(winning_score)
+            time.sleep(5) # This delays the next code execution and this is for the final player to be able to have time to see what they got as their score and rolled dice
 
-            if score_count == 1:
+            os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
-                winning_player = player_scores.index(winning_score)
+            print("STANDINGS \n") # This is for the final standings of the players, basically just telling all the plays who won
+            for i in range(len(players)):
+                print(f"{i + 1}. {player_names[i]} - {player_scores[i]}") # Prints out a numbered list that has a players name and score for all the players. Ex: 1. Banana - 5 \n 2. Eggman - 2
+            
+            winning_score = max(player_scores) # Finds the highest player score from all the player scores
 
+            score_count = player_scores.count(winning_score) # Finds out if in all the player scores, there is multiple of the highest scores
+
+            if score_count == 1: # If there is only one player with the highest score then...
+
+                winning_player = player_scores.index(winning_score) 
+                # Finds the winning player's index and then tells the players that the winning player (their name) and what score they got to win.
                 print(f"\n[!] The Winning Player is {player_names[winning_player]} With A Score of {winning_score} \n")
             
             else:
-                print("\n[!] There Is No Winner! It's A Tie With Multiple Players! If You Want To Settle The Score... Play Again!\n")
+                print("\n[!] There Is No Winner! It's A Tie With Multiple Players! If You Want To Settle The Score... Play Again!\n") # if there are multiple players with the highest score then it tells all the players and they're all tied and there is no winner
             
-            time.sleep(1)
+            time.sleep(1) # Delays code execution for effect
 
             answer = prompt_menu("Would You Like To Play Again?", ["Yes","No"])
 
@@ -228,48 +231,46 @@ def play_multi():
                     for i in range(len(players)):
                         player_scores[i] = 0
                     for i in range(len(dice.store)):
-                        dice.store[i] = "Rerolling"
+                        dice.store[i] = "Rerolling" # Gives the user an option to play again and if so, resets the keeping or rerolling of all the dice to all rerolling and rerolls dice, resets the user tries, resets the players that have played already, and then recalls the function for the players  to play again.
                         dice_output[i] = dice.dice[i].roll_dice()
                     tries = 1
                     played_players = 1
                     play_multi()
                 case "No":
-                    print("[!] Thanks For Playing!")
+                    print("[!] Thanks For Playing!") # If the user doesn't want to, the program ends and thanks the user for playing
                     exit()
         else:
+            # If all the players have not played yet but a player uses all their tries then this happens..
+            print("""
+████████╗██╗   ██╗██████╗ ███╗   ██╗     ██████╗ ██╗   ██╗███████╗██████╗ 
+╚══██╔══╝██║   ██║██╔══██╗████╗  ██║    ██╔═══██╗██║   ██║██╔════╝██╔══██╗
+   ██║   ██║   ██║██████╔╝██╔██╗ ██║    ██║   ██║██║   ██║█████╗  ██████╔╝
+   ██║   ██║   ██║██╔══██╗██║╚██╗██║    ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗
+   ██║   ╚██████╔╝██║  ██║██║ ╚████║    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║
+   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝
+                                                                          """)
 
-            print("""  ▄████  ▄▄▄       ███▄ ▄███▓▓█████     ▒█████   ██▒   █▓▓█████  ██▀███  
-    ██▒ ▀█▒▒████▄    ▓██▒▀█▀ ██▒▓█   ▀    ▒██▒  ██▒▓██░   █▒▓█   ▀ ▓██ ▒ ██▒
-    ▒██░▄▄▄░▒██  ▀█▄  ▓██    ▓██░▒███      ▒██░  ██▒ ▓██  █▒░▒███   ▓██ ░▄█ ▒
-    ░▓█  ██▓░██▄▄▄▄██ ▒██    ▒██ ▒▓█  ▄    ▒██   ██░  ▒██ █░░▒▓█  ▄ ▒██▀▀█▄  
-    ░▒▓███▀▒ ▓█   ▓██▒▒██▒   ░██▒░▒████▒   ░ ████▓▒░   ▒▀█░  ░▒████▒░██▓ ▒██▒
-    ░▒   ▒  ▒▒   ▓▒█░░ ▒░   ░  ░░░ ▒░ ░   ░ ▒░▒░▒░    ░ ▐░  ░░ ▒░ ░░ ▒▓ ░▒▓░
-    ░   ░   ▒   ▒▒ ░░  ░      ░ ░ ░  ░     ░ ▒ ▒░    ░ ░░   ░ ░  ░  ░▒ ░ ▒░
-    ░ ░   ░   ░   ▒   ░      ░      ░      ░ ░ ░ ▒       ░░     ░     ░░   ░ 
-        ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░     
-                                                        ░                   """)
-
-            display_dice()
+            display_dice() # Displays to the player their final rolled dice and tells them that their turn ended 
 
             print(f"Dice #1: {dice_output[0]}\n"
                 f"Dice #2: {dice_output[1]}\n"
-                f"Dice #3: {dice_output[2]}\n"
+                f"Dice #3: {dice_output[2]}\n" # Also displays their final dice numbers that they got after rolling all the times they could
                 f"Dice #4: {dice_output[3]}\n"
                 f"Dice #5: {dice_output[4]}\n"
                 )
-            multi_status = True
-            check_end_score()
-            time.sleep(5)
+    
+            multi_status = True # Switches multiplayer status to true because the game ended. This is for the-
+            check_end_score() # -check end score function that displays what the user got and adds to the players score for  multiplayer depending on the status
+            time.sleep(5) # Delays code execution to let the player see what they got and their dice value and visual
 
-            os.system('cls' if os.name == 'nt' else 'clear') 
+            os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
             for i in range(len(dice.store)):
-                dice.store[i] = "Rerolling"
+                dice.store[i] = "Rerolling" # Resets the keeping and rolling, rerolls dice, tries, and then adds to the number of players played and then recalls the function for the next player to play
                 dice_output[i] = dice.dice[i].roll_dice()
             tries = 1
             played_players += 1
             play_multi()
-
 
 def multiplayer():
 
@@ -302,7 +303,7 @@ def player_naming():
 
             
             if selection in range(1,len(player_names) + 1):
-                os.system('cls' if os.name == 'nt' else 'clear') 
+                os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
                 print(f"[-] This Is Player {selection}'s Current Name: {player_names[selection - 1]}")    
 
@@ -310,7 +311,7 @@ def player_naming():
 
                 player_names[selection - 1] = name_change
 
-                os.system('cls' if os.name == 'nt' else 'clear') 
+                os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
                 print(f"[-] Player {selection}'s Name Has Been Changed To '{name_change}'. \n")
                 time.sleep(1)
@@ -325,18 +326,18 @@ def player_naming():
             elif selection == 0:
                 print(f"[!] ERROR! PLAYER {selection} DOES NOT EXIST! ONLY PLAYERS 1 - {current_players} EXIST! ")    
                 time.sleep(1.5)
-                os.system('cls' if os.name == 'nt' else 'clear')  
+                os.system('cls' if os.name == 'nt' else 'clear')  # Clears terminal of previous code
             else:
                 print(f"[!] ERROR! PLAYER {selection} DOES NOT EXIST! ONLY PLAYERS 1 - {current_players} EXIST! ")
 
                 time.sleep(1.5)
-                os.system('cls' if os.name == 'nt' else 'clear') 
+                os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
 
         except Exception as e:
             print(f"[!] ERROR: {e} PLEASE INPUT AN INTEGER")
             time.sleep(2)
-            os.system('cls' if os.name == 'nt' else 'clear') 
+            os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
 
 def players_playing():
@@ -475,7 +476,7 @@ def reroll_animation():
     rerolls = 0
     reroll = True
 
-    os.system('cls' if os.name == 'nt' else 'clear') 
+    os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
     while reroll:
         print("Rerolling... ")
@@ -499,7 +500,7 @@ def reroll_animation():
         time.sleep(1)
             
         rerolls += 1
-        os.system('cls' if os.name == 'nt' else 'clear') 
+        os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
         if rerolls == 3:
             reroll = False
@@ -766,7 +767,7 @@ def change_rolls():
             case "Done":
                 print(f"[-] You Now Have {max_rolls} Rolls!")
                 time.sleep(1)
-                os.system('cls' if os.name == 'nt' else 'clear') 
+                os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
                 return max_rolls
 
 def rolls_add():
@@ -801,7 +802,7 @@ def prompt_menu(messages, user_choices): # Function that uses inquirer3 list to 
 
 
 def main():
-    os.system('cls' if os.name == 'nt' else 'clear') 
+    os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
     while True:
 
