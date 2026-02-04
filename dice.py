@@ -18,7 +18,6 @@ single_status = False
 multi_status = False
 
 
-
 def single_player(): # Single player function
     global index, dice_output, tries, max_rolls,single_status # Allows these variables to be used in this function and others.
 
@@ -113,6 +112,7 @@ def single_player(): # Single player function
             case "No":
                 print("[!] Thank You For Playing!") # If the user doesn't want to, the program ends and thanks the user for playing
                 exit()
+
 
 def play_multi(): # Multiplayer function
     global index,dice_output,tries,max_rolls, multi_status, played_players, players, players_play
@@ -272,7 +272,8 @@ def play_multi(): # Multiplayer function
             played_players += 1
             play_multi()
 
-def multiplayer():
+
+def multiplayer(): # A menu with options for the user if in the main menu they pick multiplayer
 
     while True:
         answer = prompt_menu("Please Select An Option",["Players Playing", "Player Names", "Play", "Return To Main Menu"])
@@ -280,174 +281,176 @@ def multiplayer():
         match answer:
             case "Players Playing":
                 players_playing()
-            case "Player Names":
+            case "Player Names": # Gives the user options to change the number of players playing, the player names, play, and if they want to go back to the main menu
                 player_naming()
             case "Play":
                 play_multi()
             case "Return To Main Menu":
                 return
 
+
 def player_naming():
-    global player_naming, player_names
+    global player_naming, player_names # Allows these variables to be used in this function and others.
 
     while True:
-        current_players = 0
+        current_players = 0 # Sets a placeholder variable for the # of players
 
         for i in range(len(players)):
-            current_players += 1
+            current_players += 1 # Adds to the variable depend on how many players there are
 
-        print(f"Number of Players: {current_players}\nPlayer Names: {player_names} \n")
+        print(f"Number of Players: {current_players}\nPlayer Names: {player_names} \n") # Displays number of players and all their names
 
-        try:
-            selection = int(input("[-] Please Input Which Player's Name You Would Like To Change (Example: For Player 1 Input 1): "))
+        try: # Executes code, checks for errors
+            selection = int(input("[-] Please Input Which Player's Name You Would Like To Change (Example: For Player 1 Input 1): ")) # Allows the user to input the number of the player in the ones displayed that they want to change their name
 
             
-            if selection in range(1,len(player_names) + 1):
+            if selection in range(1,len(player_names) + 1): # If they're input is in the the range of the number of players, then...
                 os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
                 print(f"[-] This Is Player {selection}'s Current Name: {player_names[selection - 1]}")    
-
+                # Displays to the user the name of the player they selected
                 name_change = input(f"[-] What Would You Like To Change Player {selection}'s Name To? ")
-
+                # Prompts the user to input what they'd like to change that players name to
                 player_names[selection - 1] = name_change
-
+                # Changes that selected played name to the name the user wants
                 os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
                 print(f"[-] Player {selection}'s Name Has Been Changed To '{name_change}'. \n")
-                time.sleep(1)
-
+                time.sleep(1) # Delays code execution for effect
+                # Tells the user that that players name has been changed
                 answer = prompt_menu("Would You Like To Change Another Player's Name?", ["Yes", "No"])
 
                 match answer:
                     case "Yes":
                         pass
-                    case "No":
+                    case "No":  # If the user wants to change another name, nothing happens because this function is in a while loop so it keep looping until the loop breaks. If they dont want to then the loop breaks
                         return
+                    
             elif selection == 0:
-                print(f"[!] ERROR! PLAYER {selection} DOES NOT EXIST! ONLY PLAYERS 1 - {current_players} EXIST! ")    
-                time.sleep(1.5)
+                print(f"[!] ERROR! PLAYER {selection} DOES NOT EXIST! ONLY PLAYERS 1 - {current_players} EXIST! ")     # If the user inputs 0 for the player's name they want to change, a error prints to them
+                time.sleep(1.5) # Delays code execution for effect
                 os.system('cls' if os.name == 'nt' else 'clear')  # Clears terminal of previous code
             else:
                 print(f"[!] ERROR! PLAYER {selection} DOES NOT EXIST! ONLY PLAYERS 1 - {current_players} EXIST! ")
-
-                time.sleep(1.5)
+                # If the user inputs any number greater than the number of players then a error appears to the user
+                time.sleep(1.5) # Delays code execution for effect
                 os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
-
+        # If any of the code in the try: function breaks then it tells the user their error and lets them try again because the code is looped until broken.
         except Exception as e:
             print(f"[!] ERROR: {e} PLEASE INPUT AN INTEGER")
-            time.sleep(2)
+            time.sleep(2) # Delays code execution for effect
             os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
 
 def players_playing():
-    global players,player,player_scores, player_names
+    global players,player,player_scores, player_names # Allows these variables to be used in this function and others.
 
     
     while True:
-        current_players = 0
+        current_players = 0 # Placeholder variable for the number of players
 
         for i in range(len(players)):
-            current_players += 1
+            current_players += 1 # Adds to the varible so that it equals the number of players
 
         print(f"Current Players: {current_players}\nTip: If You Change The Name of Your Players And Then Change Your Number Of Players, The Names Won't Save")
-
-        answer = prompt_menu("Please Select An Option",["2 Players", "3 Players", "4 Players","5 Players", "Custom Players", "Return To Previous Menu"])
+        # Gives the user the number of current players, and a tip of what happens if thye change the number of players after they named them
+        answer = prompt_menu("Please Select An Option",["2 Players", "3 Players", "4 Players","5 Players", "Custom Players", "Return To Main Menu"])
 
         match answer:
             case "2 Players":
                 player = 2
                 players = []
-                player_scores = []
+                player_scores = [] # Makes players, player_scores, and player names placeholder lists and sets a varible of players they want (player) depending on their choice in the menu
                 player_names = []
 
 
                 for i in range(player):
                     players.append(True)
-                    player_scores.append(0)
+                    player_scores.append(0) # For the number of players the user wants, the placeholder lists get added True, 0, or "Player I+1"  depending on the purpose of the list. For example if they player wants 2 players then player = [True, True] 2 Trues for the number of players they wanted.
                     player_names.append("Player " + str(i + 1))
 
                 # for i in range(len(player_names)):
                 #     if i >= player:
-                #         player_names.pop() // This was to save names after number of players changed but it works but not for custom
+                #         player_names.pop() // This was to save names after number of players changed but it works but not for custom. So I just commented it out and didnt use it in my game
                 #     elif i == player:
                 #         pass      
             case "3 Players":
                 player = 3
                 players = []
-                player_scores = []
+                player_scores = [] # Makes players, player_scores, and player names placeholder lists and sets a varible of players they want (player) depending on their choice in the menu
                 player_names = []
 
                 for i in range(player):
                     players.append(True)
-                    player_scores.append(0)
+                    player_scores.append(0) # For the number of players the user wants, the placeholder lists get added True, 0, or "Player I+1"  depending on the purpose of the list. For example if they player wants 2 players then player = [True, True] 2 Trues for the number of players they wanted.
                     player_names.append("Player " + str(i + 1))
 
             case "4 Players":
                 player = 4
                 players = []
-                player_scores = []
+                player_scores = [] # Makes players, player_scores, and player names placeholder lists and sets a varible of players they want (player) depending on their choice in the menu
                 player_names = []
 
                 for i in range(player):
                     players.append(True)
-                    player_scores.append(0)
+                    player_scores.append(0) # For the number of players the user wants, the placeholder lists get added True, 0, or "Player I+1"  depending on the purpose of the list. For example if they player wants 2 players then player = [True, True] 2 Trues for the number of players they wanted.
                     player_names.append("Player " + str(i + 1))
 
             case "5 Players":
                 player = 5
                 players = []
-                player_scores = []
+                player_scores = [] # Makes players, player_scores, and player names placeholder lists and sets a varible of players they want (player) depending on their choice in the menu
                 player_names = []
 
                 for i in range(player):
                     players.append(True)
-                    player_scores.append(0)
+                    player_scores.append(0) # For the number of players the user wants, the placeholder lists get added True, 0, or "Player I+1"  depending on the purpose of the list. For example if they player wants 2 players then player = [True, True] 2 Trues for the number of players they wanted.
                     player_names.append("Player " + str(i + 1))
 
             case "Custom Players":
                 while True:
-                    current_players = 0
+                    current_players = 0 # Placeholder variable for the number of players
 
                     for i in range(len(players)):
-                        current_players += 1
+                        current_players += 1 # Adds to the placeholder variable so that it equals the number of players
 
-                    print(f"Current Players: {current_players}")
+                    print(f"Current Players: {current_players}") # Displays number of players to the user
                     
                     answer = prompt_menu("Please Select What You Would Like To Do", ["Increment Players", "Decrement Players", "Return To Previous Menu"])
 
                     match answer:
                         case "Increment Players":
                             custom_players_increase()
-                        case "Decrement Players":
+                        case "Decrement Players": # Calls functions depending on what the user chooses in this custom players option. Functions if the user wants to increase or decrease players. Also it gaves the user an option to return to the previous menu when they're done.
                             custom_players_decrease()
                         case "Return To Previous Menu":
                             return
                         
-            case "Return To Previous Menu":
-                return
+            case "Return To Main Menu":
+                return # Takes the user back to the main menu
                             
 
 def custom_players_increase():
-    global players, player, player_scores, player_names
+    global players, player, player_scores, player_names # Allows these variables to be used in this function and others.
 
-    player = 0
+    player = 0 # Placeholder variable for the number of players
 
     for i in range(len(players)):
-        player += 1
+        player += 1 # Adds to the varible so that ti equals the number of players
 
     if player <= 9:
         player_names = []
-        players.append(True)
+        players.append(True) # As long as the number of players is less than or equal to 10, it adds player names (by setting the player names list as a placeholder and then depending on the number of players, a player name is added), additional player scores, and players to their lists. So it just adds players as long as the current players is equal to or less than 9.
         player_scores.append(0)
         for i in range(len(players)):
             player_names.append("Player " + str(i + 1))
 
-    else:
+    else: # If the user tries to increment the number of players more than 10, than it prevents that and prints our a error to the user.
         print("[!] ERROR! MAXIMUM NUMBER OF PLAYERS IS 10! \n")
 
 def custom_players_decrease():
-    global player,players,player_scores, player_names
+    global player,players,player_scores, player_names # Allows these variables to be used in this function and others.
 
     if range(len(players)) == 0:
         print("[!] ERROR! YOU NEED TO AT LEAST HAVE 2 PLAYERS \n")
@@ -463,15 +466,14 @@ def custom_players_decrease():
     
 
 def change_keep():
-    global index 
+    global index  # Allows these variables to be used in this function and others.
     if dice.store[index] == "Keeping":
         dice.store[index] = "Rerolling"
     else:
         dice.store[index] = "Keeping"
 
 def reroll_animation():
-    global dice_output
-    global face_icons
+    global dice_output, face_icons # Allows these variables to be used in this function and others.
 
     rerolls = 0
     reroll = True
@@ -485,19 +487,19 @@ def reroll_animation():
             for i in range(len(dice_output)):
                 rand = random.randint(0,4)
                 print(f" {face_icons[dice_output[i] - 1]}")
-                time.sleep(0.3)
+                time.sleep(0.3) # Delays code execution for effect
         else:
             for i in range(len(dice_output)):
                 rand = random.randint(0,4)
                 if dice.store[i] == "Keeping":
                     print(f" {face_icons[dice_output[i] - 1]}")
-                    time.sleep(0.3)
+                    time.sleep(0.3) # Delays code execution for effect
 
                 else:
                     print(f" {face_icons[dice_output[rand] - 1]}")
-                    time.sleep(0.3)
+                    time.sleep(0.3) # Delays code execution for effect
 
-        time.sleep(1)
+        time.sleep(1) # Delays code execution for effect
             
         rerolls += 1
         os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
@@ -507,7 +509,7 @@ def reroll_animation():
 
 
 def check_end_score():
-    global dice_output,num_scores,single_status, multi_status, players,player_scores
+    global dice_output,num_scores,single_status, multi_status, players,player_scores # Allows these variables to be used in this function and others.
     num_scores = [0,0,0,0,0,0]
     if single_status == True:
         for i in range(len(dice_output)):
@@ -670,18 +672,15 @@ def check_end_score():
 
     
 def five_kind():
-    global dice_output
-    global num_scores
+    global dice_output, num_scores # Allows these variables to be used in this function and others.
 
-    
     if num_scores.count(5) == 1:
         return "Five"
     else:
         return None
         
 def four_kind():
-    global dice_output
-    global num_scores
+    global dice_output, num_scores # Allows these variables to be used in this function and others.
 
     if num_scores.count(4) == 1:
         return "Four"
@@ -689,8 +688,7 @@ def four_kind():
         return None
         
 def full_house():
-    global dice_output
-    global num_scores
+    global dice_output, num_scores # Allows these variables to be used in this function and others.
 
     if 3 in num_scores and 2 in num_scores:
         return "Full"
@@ -698,8 +696,7 @@ def full_house():
         None
 
 def straight():
-    global dice_output
-    global num_scores
+    global dice_output, num_scores # Allows these variables to be used in this function and others.
 
     if num_scores == [0,1,1,1,1,1] or num_scores == [1,1,1,1,1,0]:
         return "Straight"
@@ -707,8 +704,7 @@ def straight():
         None
 
 def three_kind():
-    global dice_output
-    global num_scores
+    global dice_output, num_scores # Allows these variables to be used in this function and others.
 
     if num_scores.count(3) == 1:
         return "Three"
@@ -716,8 +712,7 @@ def three_kind():
         return None
 
 def two_pair():
-    global dice_output
-    global num_scores
+    global dice_output, num_scores # Allows these variables to be used in this function and others.
 
     if num_scores.count(2) == 2:
         return "Two Pair"
@@ -725,8 +720,7 @@ def two_pair():
         return None
 
 def two_kind():
-    global dice_output
-    global num_scores
+    global dice_output, num_scores # Allows these variables to be used in this function and others.
 
     if num_scores.count(2) == 1:
         return "Two Kind"
@@ -743,7 +737,7 @@ def reroll_dice():
 
 
 def display_dice():
-    global dice_output
+    global dice_output # Allows these variables to be used in this function and others.
 
     print("Dice Rolled: ")
 
@@ -752,7 +746,7 @@ def display_dice():
 
 
 def change_rolls():
-    global max_rolls
+    global max_rolls # Allows these variables to be used in this function and others.
 
     while True:
         print(f"Current Rolls: {max_rolls}") 
@@ -766,12 +760,12 @@ def change_rolls():
                 rolls_subtract()
             case "Done":
                 print(f"[-] You Now Have {max_rolls} Rolls!")
-                time.sleep(1)
+                time.sleep(1) # Delays code execution for effect
                 os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
                 return max_rolls
 
 def rolls_add():
-    global max_rolls
+    global max_rolls # Allows these variables to be used in this function and others.
 
     if max_rolls <= 9:
         max_rolls += 1
@@ -780,7 +774,7 @@ def rolls_add():
 
 
 def rolls_subtract():
-    global max_rolls
+    global max_rolls # Allows these variables to be used in this function and others.
 
     if max_rolls > 1:
         max_rolls -= 1
