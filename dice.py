@@ -1,6 +1,6 @@
 # Author: Jayden Murillo
 # Created: 1.13.26
-# Last Edit: 2.2.26
+# Last Edit: 2.4.26
 
 from die import Dice
 from face import face_icons
@@ -289,7 +289,7 @@ def multiplayer(): # A menu with options for the user if in the main menu they p
                 return
 
 
-def player_naming():
+def player_naming(): # Lets players change their player names
     global player_naming, player_names # Allows these variables to be used in this function and others.
 
     while True:
@@ -343,8 +343,8 @@ def player_naming():
             os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
 
-def players_playing():
-    global players,player,player_scores, player_names # Allows these variables to be used in this function and others.
+def players_playing(): # Lets user change the number of player playing in multiplayer
+    global players,player,player_scores, player_names, current_players # Allows these variables to be used in this function and others.
 
     
     while True:
@@ -431,7 +431,7 @@ def players_playing():
                 return # Takes the user back to the main menu
                             
 
-def custom_players_increase():
+def custom_players_increase(): # Lets users increase their players
     global players, player, player_scores, player_names # Allows these variables to be used in this function and others.
 
     player = 0 # Placeholder variable for the number of players
@@ -441,76 +441,75 @@ def custom_players_increase():
 
     if player <= 9:
         player_names = []
-        players.append(True) # As long as the number of players is less than or equal to 10, it adds player names (by setting the player names list as a placeholder and then depending on the number of players, a player name is added), additional player scores, and players to their lists. So it just adds players as long as the current players is equal to or less than 9.
+        players.append(True) # As long as the number of players is less than or equal to 10, it adds player names (by setting the player names list as a placeholder/empty and then depending on the number of players, a player name is added), adds player scores, and players to their lists. So it just increases the number of players as long as the current players is equal to or less than 9.
         player_scores.append(0)
         for i in range(len(players)):
             player_names.append("Player " + str(i + 1))
 
-    else: # If the user tries to increment the number of players more than 10, than it prevents that and prints our a error to the user.
+    else: # If the user tries to increment the number of players more than 10, than it prevents that and prints our a error to the user because the limit is 10 players.
         print("[!] ERROR! MAXIMUM NUMBER OF PLAYERS IS 10! \n")
 
-def custom_players_decrease():
-    global player,players,player_scores, player_names # Allows these variables to be used in this function and others.
 
-    if range(len(players)) == 0:
-        print("[!] ERROR! YOU NEED TO AT LEAST HAVE 2 PLAYERS \n")
+def custom_players_decrease(): # Lets players decrease their players
+    global player,players,player_scores, player_names, current_players # Allows these variables to be used in this function and others.
 
-    if player >= 2:
+    player = current_players # Makes player variable the current number of players the user has
+
+    if player > 2:
         player -= 1
-        players.pop()
+        players.pop() # As long as the the player has a number of players is greater than 2 that the user wants, then it decreases the players, player_scores, and player names lists by 1. It gets rid of the last thing in the list in order to decrease the number of players.
         player_scores.pop()
         player_names.pop()
 
-    else:
+    else: # Prints out an error to the user if they try to decrease the number of players less than 2, because for multiplayer, at least 2 players are needed
         print("[!] ERROR! MINIMUM NUMBER OF PLAYERS IS 2! \n")
     
 
-def change_keep():
+def change_keep(): # Changes the dices being kept or rerolling, letting the user change their keep or rerolling status
     global index  # Allows these variables to be used in this function and others.
     if dice.store[index] == "Keeping":
-        dice.store[index] = "Rerolling"
+        dice.store[index] = "Rerolling" # This function depends on the index variable that is set for each individual dice and their indexes. So, depending on the index, if the user already decided to keep that specific dices value, then it reverts it back to rerolling and if it's on rerolling then it goes to keeping that vlaue for the user so that it stays even if the user rerolls.
     else:
         dice.store[index] = "Keeping"
 
-def reroll_animation():
+def reroll_animation(): # Visual rerolling animation of the dices
     global dice_output, face_icons # Allows these variables to be used in this function and others.
 
     rerolls = 0
-    reroll = True
+    reroll = True # Rerolls serves as the number of times the animation happens and reroll makes the function loop
 
     os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
     while reroll:
-        print("Rerolling... ")
+        print("Rerolling... ") # Displays to the user that their dice is rerolling
 
         if rerolls == 2:
             for i in range(len(dice_output)):
-                rand = random.randint(0,4)
-                print(f" {face_icons[dice_output[i] - 1]}")
+                print(f" {face_icons[dice_output[i] - 1]}") # On the last reroll animation, the dices that were rolled showed to the user are the actual players dice values
                 time.sleep(0.3) # Delays code execution for effect
         else:
             for i in range(len(dice_output)):
-                rand = random.randint(0,4)
-                if dice.store[i] == "Keeping":
-                    print(f" {face_icons[dice_output[i] - 1]}")
+                rand = random.randint(0,4) # Sets a random variable between 0 and 4 for the dices indexes in order to make it seem like the dices are rerolling randomly
+                if dice.store[i] == "Keeping": 
+                    print(f" {face_icons[dice_output[i] - 1]}") # When a dices value is being kept, that displayed dice does not change since it's not being rerolled
                     time.sleep(0.3) # Delays code execution for effect
 
                 else:
-                    print(f" {face_icons[dice_output[rand] - 1]}")
+                    print(f" {face_icons[dice_output[rand] - 1]}") # Displays to the user a random dice visual to show to the user the dices being rerolled randomly
                     time.sleep(0.3) # Delays code execution for effect
 
         time.sleep(1) # Delays code execution for effect
             
-        rerolls += 1
+        rerolls += 1 # When it cycles through all the dices and after showing to the user a reroll visual it adds to the number of rerolls that the animation does for effect
         os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
         if rerolls == 3:
-            reroll = False
+            reroll = False # When the functions show to the user the dice being rerolled 3 times, it breaks the loop and ends the function.
 
 
-def check_end_score():
+def check_end_score(): # This is to score the user based on yahtee combinations and tell them what they got
     global dice_output,num_scores,single_status, multi_status, players,player_scores # Allows these variables to be used in this function and others.
-    num_scores = [0,0,0,0,0,0]
+    num_scores = [0,0,0,0,0,0] # This list is for each dice value, for example, in the first index, if the user got 2 1's then that first index would each 2
     if single_status == True:
         for i in range(len(dice_output)):
             if dice_output[i] == 1:
@@ -520,7 +519,7 @@ def check_end_score():
             if dice_output[i] == 3:
                 num_scores[2] += 1
             if dice_output[i] == 4:
-                num_scores[3] += 1
+                num_scores[3] += 1 # This code happens if the program is in single player mode and after they used all their rerolls. This checks each of the users final values that they got for each dice and adds 1 to their assigned index in num_scores in order to determine how much of each value they got after they finished rerolling. The total of num scores should equal 5 for the 5 dices the user had.
             if dice_output[i] == 5:
                 num_scores[4] += 1
             if dice_output[i] == 6:
@@ -532,21 +531,21 @@ def check_end_score():
    / ____(_)   _____     ____  / __/  ____ _   / /__(_)___  ____/ /
   / /_  / / | / / _ \   / __ \/ /_   / __ `/  / //_/ / __ \/ __  / 
  / __/ / /| |/ /  __/  / /_/ / __/  / /_/ /  / ,< / / / / / /_/ /  
-/_/   /_/ |___/\___/   \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/ \n""")
+/_/   /_/ |___/\___/   \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/ \n""") # Displays to the player what they got depending on if the function, that checks for this certain combination (five of a kind), returns something. If not, then the function returns nothing and does not display to the user that they got this because they didnt.
         elif four_kind() == "Four":
             print("""   
     ____                          ____            __   _           __
    / __/___  __  _______   ____  / __/  ____ _   / /__(_)___  ____/ /
   / /_/ __ \/ / / / ___/  / __ \/ /_   / __ `/  / //_/ / __ \/ __  / 
  / __/ /_/ / /_/ / /     / /_/ / __/  / /_/ /  / ,< / / / / / /_/ /  
-/_/  \____/\__,_/_/      \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/ \n""")
+/_/  \____/\__,_/_/      \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/ \n""") # Displays to the player what they got depending on if the function, that checks for this certain combination (four of a kind), returns something. If not, then the function returns nothing and does not display to the user that they got this because they didnt.
         elif full_house() == "Full":
             print("""   
     ____      ____   __  __                    
    / __/_  __/ / /  / / / /___  __  __________ 
   / /_/ / / / / /  / /_/ / __ \/ / / / ___/ _ |
  / __/ /_/ / / /  / __  / /_/ / /_/ (__  )  __/
-/_/  \__,_/_/_/  /_/ /_/\____/\__,_/____/\___/ \n""" )
+/_/  \__,_/_/_/  /_/ /_/\____/\__,_/____/\___/ \n""" ) # Displays to the player what they got depending on if the function, that checks for this certain combination (full house), returns something. If not, then the function returns nothing and does not display to the user that they got this because they didnt.
         elif straight() == "Straight":
             print("""    
     ___       _____ __             _       __    __ 
@@ -554,35 +553,35 @@ def check_end_score():
   / /| |     \__ \/ __/ ___/ __ `/ / __ `/ __ \/ __/
  / ___ |    ___/ / /_/ /  / /_/ / / /_/ / / / / /_  
 /_/  |_|   /____/\__/_/   \__,_/_/\__, /_/ /_/\__/  
-                                 /____/             \n""") 
+                                 /____/             \n""")  # Displays to the player what they got depending on if the function, that checks for this certain combination (A straight), returns something. If not, then the function returns nothing and does not display to the user that they got this because they didnt.
         elif three_kind() == "Three":
             print("""  
   ________                            ____            __   _           __
  /_  __/ /_  ________  ___     ____  / __/  ____ _   / /__(_)___  ____/ /
   / / / __ \/ ___/ _ \/ _ \   / __ \/ /_   / __ `/  / //_/ / __ \/ __  / 
  / / / / / / /  /  __/  __/  / /_/ / __/  / /_/ /  / ,< / / / / / /_/ /  
-/_/ /_/ /_/_/   \___/\___/   \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/\n """ )
+/_/ /_/ /_/_/   \___/\___/   \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/\n """ ) # Displays to the player what they got depending on if the function, that checks for this certain combination (three of a kind), returns something. If not, then the function returns nothing and does not display to the user that they got this because they didnt.
         elif two_pair() == "Two Pair":
             print("""  
   ______                  ____        _     
  /_  __/      ______     / __ \____ _(_)____
   / / | | /| / / __ \   / /_/ / __ `/ / ___/
  / /  | |/ |/ / /_/ /  / ____/ /_/ / / /    
-/_/   |__/|__/\____/  /_/    \__,_/_/_/     \n""")
+/_/   |__/|__/\____/  /_/    \__,_/_/_/     \n""") # Displays to the player what they got depending on if the function, that checks for this certain combination (two pair), returns something. If not, then the function returns nothing and does not display to the user that they got this because they didnt.
         elif two_kind() == "Two Kind":
             print(""" 
   ______                        ____            __   _           __
  /_  __/      ______     ____  / __/  ____ _   / /__(_)___  ____/ /
   / / | | /| / / __ \   / __ \/ /_   / __ `/  / //_/ / __ \/ __  / 
  / /  | |/ |/ / /_/ /  / /_/ / __/  / /_/ /  / ,< / / / / / /_/ /  
-/_/   |__/|__/\____/   \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/ \n""" )
+/_/   |__/|__/\____/   \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/ \n""" ) # Displays to the player what they got depending on if the function, that checks for this certain combination (two of a kind), returns something. If not, then the function returns nothing and does not display to the user that they got this because they didnt.
         else:
             print("""   
     __                              ____ 
    / /   ____  ________  _____   _ / __ |
   / /   / __ \/ ___/ _ \/ ___/  (_) / / /
  / /___/ /_/ (__  )  __/ /     _ / /_/ / 
-/_____/\____/____/\___/_/     (_)\____/  \n""" )
+/_____/\____/____/\___/_/     (_)\____/  \n""" ) # Displays to the player that they're a "loser" because they didn't get any combination
     else:
         pass
     if multi_status == True:
@@ -593,7 +592,7 @@ def check_end_score():
                 num_scores[1] += 1
             if dice_output[i] == 3:
                 num_scores[2] += 1
-            if dice_output[i] == 4:
+            if dice_output[i] == 4: # This code happens if the program is in multiplayer mode and a player used all their rerolls. This checks each of the users final values that they got for each dice and adds 1 to their assigned index in num_scores in order to determine how much of each value they got after they finished rerolling. The total of num scores should equal 5 for the 5 dices the user had.
                 num_scores[3] += 1
             if dice_output[i] == 5:
                 num_scores[4] += 1
@@ -607,7 +606,7 @@ def check_end_score():
    / ____(_)   _____     ____  / __/  ____ _   / /__(_)___  ____/ /
   / /_  / / | / / _ \   / __ \/ /_   / __ `/  / //_/ / __ \/ __  / 
  / __/ / /| |/ /  __/  / /_/ / __/  / /_/ /  / ,< / / / / / /_/ /  
-/_/   /_/ |___/\___/   \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/ \n""")
+/_/   /_/ |___/\___/   \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/ \n""")  # Displays to the player what they got depending on if the function, that checks for this certain combination (five of a kind), returns something. If not, then the function returns nothing and does not display to the user that they got this because they didnt. Then adds points to that players score, according to their index in player_scores, depending on what they got in the end.
             player_scores[played_players - 1] += 7
         elif four_kind() == "Four":
             print("""   
@@ -615,7 +614,7 @@ def check_end_score():
    / __/___  __  _______   ____  / __/  ____ _   / /__(_)___  ____/ /
   / /_/ __ \/ / / / ___/  / __ \/ /_   / __ `/  / //_/ / __ \/ __  / 
  / __/ /_/ / /_/ / /     / /_/ / __/  / /_/ /  / ,< / / / / / /_/ /  
-/_/  \____/\__,_/_/      \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/ \n""")
+/_/  \____/\__,_/_/      \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/ \n""") # Displays to the player what they got depending on if the function, that checks for this certain combination (four of a kind), returns something. If not, then the function returns nothing and does not display to the user that they got this because they didnt. Then adds points to that players score, according to their index in player_scores, depending on what they got in the end.
             player_scores[played_players - 1] += 6
         elif full_house() == "Full":
             print("""   
@@ -623,7 +622,7 @@ def check_end_score():
    / __/_  __/ / /  / / / /___  __  __________ 
   / /_/ / / / / /  / /_/ / __ \/ / / / ___/ _ |
  / __/ /_/ / / /  / __  / /_/ / /_/ (__  )  __/
-/_/  \__,_/_/_/  /_/ /_/\____/\__,_/____/\___/ \n""" )
+/_/  \__,_/_/_/  /_/ /_/\____/\__,_/____/\___/ \n""" ) # Displays to the player what they got depending on if the function, that checks for this certain combination (full house), returns something. If not, then the function returns nothing and does not display to the user that they got this because they didnt. Then adds points to that players score, according to their index in player_scores, depending on what they got in the end.
             player_scores[played_players - 1] += 5
         elif straight() == "Straight":
             print("""    
@@ -632,7 +631,7 @@ def check_end_score():
   / /| |     \__ \/ __/ ___/ __ `/ / __ `/ __ \/ __/
  / ___ |    ___/ / /_/ /  / /_/ / / /_/ / / / / /_  
 /_/  |_|   /____/\__/_/   \__,_/_/\__, /_/ /_/\__/  
-                                 /____/             \n""")
+                                 /____/             \n""") # Displays to the player what they got depending on if the function, that checks for this certain combination (A straight), returns something. If not, then the function returns nothing and does not display to the user that they got this because they didnt. Then adds points to that players score, according to their index in player_scores, depending on what they got in the end.
             player_scores[played_players - 1] += 4
         elif three_kind() == "Three":
             print("""  
@@ -640,7 +639,7 @@ def check_end_score():
  /_  __/ /_  ________  ___     ____  / __/  ____ _   / /__(_)___  ____/ /
   / / / __ \/ ___/ _ \/ _ \   / __ \/ /_   / __ `/  / //_/ / __ \/ __  / 
  / / / / / / /  /  __/  __/  / /_/ / __/  / /_/ /  / ,< / / / / / /_/ /  
-/_/ /_/ /_/_/   \___/\___/   \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/\n """ )
+/_/ /_/ /_/_/   \___/\___/   \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/\n """ ) # Displays to the player what they got depending on if the function, that checks for this certain combination (Three of a kind), returns something. If not, then the function returns nothing and does not display to the user that they got this because they didnt. Then adds points to that players score, according to their index in player_scores, depending on what they got in the end.
             player_scores[played_players - 1] += 3
         elif two_pair() == "Two Pair":
             print("""  
@@ -648,7 +647,7 @@ def check_end_score():
  /_  __/      ______     / __ \____ _(_)____
   / / | | /| / / __ \   / /_/ / __ `/ / ___/
  / /  | |/ |/ / /_/ /  / ____/ /_/ / / /    
-/_/   |__/|__/\____/  /_/    \__,_/_/_/     \n""")
+/_/   |__/|__/\____/  /_/    \__,_/_/_/     \n""") # Displays to the player what they got depending on if the function, that checks for this certain combination (two pair), returns something. If not, then the function returns nothing and does not display to the user that they got this because they didnt. Then adds points to that players score, according to their index in player_scores, depending on what they got in the end.
             player_scores[played_players - 1] += 2
         elif two_kind() == "Two Kind":
             print(""" 
@@ -656,7 +655,7 @@ def check_end_score():
  /_  __/      ______     ____  / __/  ____ _   / /__(_)___  ____/ /
   / / | | /| / / __ \   / __ \/ /_   / __ `/  / //_/ / __ \/ __  / 
  / /  | |/ |/ / /_/ /  / /_/ / __/  / /_/ /  / ,< / / / / / /_/ /  
-/_/   |__/|__/\____/   \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/ \n""" )
+/_/   |__/|__/\____/   \____/_/     \__,_/  /_/|_/_/_/ /_/\__,_/ \n""" ) # Displays to the player what they got depending on if the function, that checks for this certain combination (two of a kind), returns something. If not, then the function returns nothing and does not display to the user that they got this because they didnt. Then adds points to that players score, according to their index in player_scores, depending on what they got in the end.
             player_scores[played_players - 1] += 1
         else:
             print("""   
@@ -666,120 +665,128 @@ def check_end_score():
  / /___/ /_/ (__  )  __/ /     _ / /_/ / 
 /_____/\____/____/\___/_/     (_)\____/  
                   
-                  \n""" )
+                  \n""" )  # Displays to the player that they're a "loser" because they didn't get any combination and does not add any score because they didnt get any combination.
     else:
-        pass
+        pass # If neither of the status's are true then nothing happens.
 
     
-def five_kind():
+# The count() function checks for a value in a list and returns how many times of that value is in a list
+def five_kind(): # Checks for five of a kind
     global dice_output, num_scores # Allows these variables to be used in this function and others.
 
     if num_scores.count(5) == 1:
-        return "Five"
+        return "Five" # If there is 5 of one kind of value then this function returns something, meaning that the user got a five of a kind combination, if not, nothing happens.
     else:
         return None
         
-def four_kind():
+
+def four_kind(): # Checks for four of a kind
     global dice_output, num_scores # Allows these variables to be used in this function and others.
 
-    if num_scores.count(4) == 1:
-        return "Four"
+    if num_scores.count(4) == 1: 
+        return "Four" # If there is 4 of one kind of value then this function returns something, meaning that the user got a four of a kind combination, if not, nothing happens.
     else:
         return None
         
-def full_house():
+
+def full_house(): # Checks for full house
     global dice_output, num_scores # Allows these variables to be used in this function and others.
 
     if 3 in num_scores and 2 in num_scores:
-        return "Full"
+        return "Full" # If there is 3 of one kind of value and 2 of another value then this function returns something, meaning that the user got a full house combination, if not, nothing happens.
     else:
         None
 
-def straight():
+
+def straight(): # Checks for a straight
     global dice_output, num_scores # Allows these variables to be used in this function and others.
 
     if num_scores == [0,1,1,1,1,1] or num_scores == [1,1,1,1,1,0]:
-        return "Straight"
+        return "Straight" # If there is 5 of 5 kinds of values (only if 1 or 6 is missing from these values) then this function returns something, meaning that the user got a straight, if not, nothing happens.
     else:
         None
 
-def three_kind():
+
+def three_kind(): # Checks for three of a kind
     global dice_output, num_scores # Allows these variables to be used in this function and others.
 
     if num_scores.count(3) == 1:
-        return "Three"
+        return "Three" # If there is 3 of one kind of value then this function returns something, meaning that the user got a three of a kind combination, if not, nothing happens.
     else:
         return None
 
-def two_pair():
+
+def two_pair(): # Checks for a two pair
     global dice_output, num_scores # Allows these variables to be used in this function and others.
 
     if num_scores.count(2) == 2:
-        return "Two Pair"
+        return "Two Pair" # If there is 2 pairs of something (2 of one kind of value equalling 2), meaning that the user got a two pair combination, if not, nothing happens.
     else:
         return None
 
-def two_kind():
+
+def two_kind(): # Checks for two of a kind
     global dice_output, num_scores # Allows these variables to be used in this function and others.
 
     if num_scores.count(2) == 1:
-        return "Two Kind"
+        return "Two Kind" # If there is 2 of one kind of value then this function returns something, meaning that the user got a two of a kind combination, if not, nothing happens.
     else:
         return None
 
 
-def reroll_dice():
+def reroll_dice(): # Rerolls dice
     for i in range(len(dice.store)):
         if dice.store[i] == "Keeping":
-            pass
+            pass # If the dices are being kept then thhey are not rerolled but if they're "rerolling" then they get rerolled.
         else:
             dice_output[i] = dice.dice[i].roll_dice()
 
 
-def display_dice():
+def display_dice(): # Displays to the user a visual of their dice
     global dice_output # Allows these variables to be used in this function and others.
 
     print("Dice Rolled: ")
-
+    # Displays to the user a visual of the dices and their values they rolled as they choose whether to reroll or not or keep a specific dice.
     for i in range(len(dice_output)):
         print(f" {face_icons[dice_output[i] - 1]}")
 
 
-def change_rolls():
+def change_rolls(): # Allows the user to change the number of rolls they want
     global max_rolls # Allows these variables to be used in this function and others.
 
     while True:
-        print(f"Current Rolls: {max_rolls}") 
+        print(f"Current Rolls: {max_rolls}") # Displays to the user their current maximum number of rolls/the number of rolls they have available
 
         answer = prompt_menu("Would You Like to Increase or Decrease Your Amount Of Rolls?", ["Increment", "Decrement", "Done"])
 
         match answer:
             case "Increment":
                 rolls_add()
-            case "Decrement":
+            case "Decrement": # Calls functions depending on the users choice to increase or decrease rolls
                 rolls_subtract()
             case "Done":
-                print(f"[-] You Now Have {max_rolls} Rolls!")
+                print(f"[-] You Now Have {max_rolls} Rolls!") # Just tell the users how many rolls they have after changing their rolls
                 time.sleep(1) # Delays code execution for effect
                 os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
-                return max_rolls
+                return max_rolls # Changes number of rolls
 
-def rolls_add():
+
+def rolls_add(): # Adds/increases to the total number of user rolls
     global max_rolls # Allows these variables to be used in this function and others.
 
     if max_rolls <= 9:
-        max_rolls += 1
+        max_rolls += 1 # As long as the maximum rolls is less than or equal to 9 then the user can increase the number of rolls
     else:
-        print("[!] ERROR! THE MAX NUMBER OF ROLLS IS 10! \n")
+        print("[!] ERROR! THE MAX NUMBER OF ROLLS IS 10! \n") # If the user tries to increase the more than 10, than my program screams at them because the max is 10 rolls.
 
 
-def rolls_subtract():
+def rolls_subtract(): # Subtracts/decreases to the total number of user rolls
     global max_rolls # Allows these variables to be used in this function and others.
 
     if max_rolls > 1:
-        max_rolls -= 1
+        max_rolls -= 1 # As long as the user's max rolls is grater than 1, then the user can decrease rolls
     else:
-        print("[!] ERROR! THE MINIMUM NUMBER OF ROLLS IS 1! \n")
+        print("[!] ERROR! THE MINIMUM NUMBER OF ROLLS IS 1! \n") # Screams as the user if they try to decrease rolls less than 1 because the minimum is 1 roll
 
 
 def prompt_menu(messages, user_choices): # Function that uses inquirer3 list to make it easy to print out a menu for the user with options.
@@ -795,14 +802,15 @@ def prompt_menu(messages, user_choices): # Function that uses inquirer3 list to 
     return answer['choice'] # This basically returns the inquirere3 list menu so we can just assign values for the parameters to make our menu say what we need and have the options we want to give
 
 
-def main():
+def main(): # Program main menu
     os.system('cls' if os.name == 'nt' else 'clear') # Clears terminal of previous code
 
     while True:
 
-        print("""╦ ╦┌─┐┬  ┌─┐┌─┐┌┬┐┌─┐  ┌┬┐┌─┐  ┌┬┐┬┌─┐┌─┐  ┌─┐┌─┐┬┌─┌─┐┬─┐┬
+        print("""
+╦ ╦┌─┐┬  ┌─┐┌─┐┌┬┐┌─┐  ┌┬┐┌─┐  ┌┬┐┬┌─┐┌─┐  ┌─┐┌─┐┬┌─┌─┐┬─┐┬
 ║║║├┤ │  │  │ ││││├┤    │ │ │   ││││  ├┤   ├─┘│ │├┴┐├┤ ├┬┘│
-╚╩╝└─┘┴─┘└─┘└─┘┴ ┴└─┘   ┴ └─┘  ─┴┘┴└─┘└─┘  ┴  └─┘┴ ┴└─┘┴└─o""")
+╚╩╝└─┘┴─┘└─┘└─┘┴ ┴└─┘   ┴ └─┘  ─┴┘┴└─┘└─┘  ┴  └─┘┴ ┴└─┘┴└─o""") # Welcomes the user
     
         answer = prompt_menu("Please Select An Option",["Exit", "Single Player", "Change Rolls", "Multiplayer"] )
 
@@ -811,11 +819,11 @@ def main():
                 print("[!] Thank You For Playing!")
                 exit()
             case "Single Player":
-                single_player()
+                single_player() # Allows the user to exit the program, play single player, change the number of rolls they have, and play multiplayer depend on what they choose and calls functions that does that.
             case "Change Rolls":
                 change_rolls()
             case "Multiplayer":
                 multiplayer()
 
 if __name__ == "__main__":
-    main()
+    main() # If this file is the main one being run, then it calls the main menu/ the program.
